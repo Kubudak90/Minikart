@@ -1,0 +1,1173 @@
+MiniKart Aile
+
+MVP Ürün ve Teknik Spesifikasyonu v0.1
+
+Çalışma adı: MiniKart Aile
+Kategori: Çocuklar için finans kartı + ebeveyn kontrollü aile para yönetimi
+Hedef ülke: Türkiye
+İlk hedef yaş grubu: 8-14 yaş
+Ürün tipi: Mobil uygulama + ön ödemeli/sanal/fiziksel kart + ebeveyn kontrol paneli
+Ana fikir: Çocuklara güvenli para kullanımı öğretmek, ebeveynlere harçlık ve harcama kontrolü vermek.
+
+⸻
+
+1. Ürün Tanımı
+
+MiniKart Aile, çocukların ilk finans deneyimini güvenli, kontrollü ve eğitici hale getiren bir aile uygulamasıdır.
+
+Ürün, çocuğa fiziksel veya sanal bir kart verir; ebeveyn ise uygulama üzerinden harçlık gönderir, limit koyar, harcamaları takip eder, görev tanımlar, birikim hedefi oluşturur ve çocuğun finansal davranışlarını yönetir.
+
+Bu bir “çocuk kredi kartı” değildir. Türkiye’de 18 yaş altı bireylerin kendi adlarına kredi kartı alamaması, ancak ebeveyn kartına bağlı ek kart kullanabilmesi nedeniyle ürünün temel kurgusu ön ödemeli kart / banka kartı / elektronik para bakiyesi üzerine kurulmalıdır. (findeks.com⁠￼)
+
+⸻
+
+2. Konumlandırma
+
+Ana vaat
+
+Çocuğun ilk kartı, ailenin kontrolünde.
+
+Açıklama
+
+MiniKart Aile; harçlık, kart, birikim ve ebeveyn kontrolünü tek uygulamada birleştirir.
+
+Marka kişiliği
+
+* Güvenli
+* Sıcak
+* Aile dostu
+* Eğitici
+* Modern
+* Fazla çocukça değil
+* Fazla banka gibi de değil
+
+Çizgi şu olmalı: Çocuğa sempatik, ebeveyne güven veren.
+Yani ne “oyuncak banka”, ne de “çocuğa kurumsal kredi risk raporu çıkaralım” saçmalığı. İnsanlık arada bir orta yol bulabiliyor, mucize.
+
+⸻
+
+3. Problem
+
+Türkiye’de çocuklara harçlık veriliyor ama süreç hâlâ dağınık:
+
+* Nakit takip edilemiyor.
+* Çocuk parayı nereye harcadığını göremiyor.
+* Ebeveyn gerçek zamanlı kontrol sağlayamıyor.
+* Harçlık davranışı finansal eğitime dönüşmüyor.
+* Bankaların çocuk ürünleri genelde ana bankacılık uygulamasına gömülü kalıyor.
+* Çocuk için ayrı, eğitici, sıcak ve davranış odaklı bir ürün deneyimi eksik.
+
+Bankalar bu alanda ürünler sunmaya başlamış durumda. Örneğin Garanti BBVA “Ailem” alanında harcama takibi, ebeveyn kontrolü, vadesiz hesap, banka kartı, ek kart ve BES gibi ürünleri uygulama içinde topluyor. (garantibbva.com.tr⁠￼) Yapı Kredi de 18 yaş altı çocuklar için hesap, banka kartı, ön ödemeli kart, BES ve düzenli fon alımı gibi çözümler sunuyor. (yapikredi.com.tr⁠￼)
+
+Fırsat: Bankaların ürünleri güçlü ama çoğu “çocuk ve aile deneyimi” değil, “bankacılık ürünü.” MiniKart Aile’nin farkı burada.
+
+⸻
+
+4. Hedef Kullanıcılar
+
+Birincil kullanıcı: Ebeveyn
+
+Profil:
+
+* 30-45 yaş arası
+* 8-14 yaş arası çocuğu var
+* Mobil bankacılık kullanıyor
+* Nakit taşımayı azaltmak istiyor
+* Çocuğuna kontrollü finansal özgürlük vermek istiyor
+* Harcama takibi ve güvenlik istiyor
+
+İhtiyaçları:
+
+* Çocuğa kolay para gönderme
+* Harcamaları anlık görme
+* Limit koyma
+* Nerede harcayabileceğini kontrol etme
+* Çocuğa para bilinci kazandırma
+
+İkincil kullanıcı: Çocuk
+
+Profil:
+
+* 8-14 yaş
+* İlk kart deneyimi
+* Oyun, okul, kantin, kırtasiye, ulaşım gibi küçük harcamaları var
+* Hedef koyma ve ödül mekanikleriyle motive olabilir
+
+İhtiyaçları:
+
+* Bakiye görme
+* Harçlık alma
+* Bir şeyler için para biriktirme
+* Kartını güvenle kullanma
+* Ebeveynle çatışmadan para talep etme
+
+Üçüncül kullanıcı: Akraba
+
+Profil:
+
+* Dede, anneanne, babaanne, hala, teyze, amca
+* Bayram, doğum günü, karne gibi zamanlarda para göndermek ister
+
+İhtiyaçları:
+
+* Çocuğa kolay hediye/harçlık gönderme
+* Hedefe katkı yapma
+* Güvenli ödeme linki
+
+⸻
+
+5. Ürün Kapsamı
+
+MiniKart Aile üç ana parçadan oluşur:
+
+1. Ebeveyn uygulaması
+2. Çocuk uygulaması
+3. MiniKart kart altyapısı
+
+Kart altyapısı ilk aşamada lisanslı bir elektronik para kuruluşu veya banka partneri üzerinden sağlanmalıdır. Türkiye’de elektronik para ve ön ödemeli kart yapısı 6493 sayılı Kanun ve TCMB faaliyet izinleri kapsamında yürür; elektronik para kuruluşları TCMB tarafından listelenir. (tcmb.gov.tr⁠￼) TÖDEB’e göre ön ödemeli kartlar, yüklenen fon tutarı kadar ödeme yapılmasını sağlayan fiziki veya sanal kartlardır; krediyle ilişkilendirilemezler. (todeb.org.tr⁠￼)
+
+⸻
+
+6. MVP Kapsamı
+
+MVP’nin amacı:
+Bir ebeveynin çocuk profili oluşturup para yüklemesi, çocuğa kart tanımlaması, harçlık göndermesi, limit koyması ve harcamayı takip etmesi.
+
+MVP’de olacaklar
+
+Ebeveyn tarafı
+
+* Telefon numarası ile kayıt
+* Kimlik doğrulama / KYC partner akışı
+* Çocuk profili oluşturma
+* Çocuk için sanal kart oluşturma
+* Fiziksel kart talebi
+* Bakiye yükleme
+* Çocuğa para gönderme
+* Haftalık/aylık otomatik harçlık planı
+* Harcama bildirimi
+* Günlük/haftalık limit
+* Kartı dondurma/açma
+* Basit kategori kontrolü
+* Birikim hedefi oluşturma
+* Görev oluşturma
+* Görev tamamlanınca ödül gönderme
+
+Çocuk tarafı
+
+* Çocuk hesabına giriş
+* Bakiye görüntüleme
+* Harçlık geçmişi
+* Harcama geçmişi
+* Birikim hedefi
+* Görev listesi
+* Görev tamamlandı bildirimi
+* Para isteme butonu
+* Kart bilgileri görüntüleme, güvenli biçimde sınırlı
+* Basit finansal mini içerikler
+
+Sistem tarafı
+
+* Partner ödeme/e-para sağlayıcısı entegrasyonu
+* Kart oluşturma
+* Kart işlem webhookları
+* Bildirim sistemi
+* Limit motoru
+* Görev/ödül motoru
+* Audit log
+* KVKK uyumlu veri saklama
+* Admin panel
+
+⸻
+
+7. MVP’de Olmayacaklar
+
+İlk sürümde şunlar yapılmamalı:
+
+* Kredi kartı
+* Kredi/skor/risk ürünü
+* Yatırım tavsiyesi
+* Kripto
+* Açık marketplace
+* Çocuklara reklam gösterimi
+* Sosyal medya benzeri çocuk etkileşimi
+* Okul kantin entegrasyonu
+* BES/fon/altın entegrasyonu
+* Geniş çaplı sadakat programı
+
+Bunları MVP’ye koyarsan ürün değil, regülasyon çorbası olur. İçine de biraz KVKK rendelersin, afiyetle dava yersin.
+
+⸻
+
+8. Temel Kullanıcı Akışları
+
+8.1 Ebeveyn kayıt akışı
+
+1. Kullanıcı telefon numarası girer.
+2. OTP ile doğrulanır.
+3. Ad-soyad, e-posta, TCKN gibi bilgiler alınır.
+4. Partner sağlayıcı üzerinden KYC tamamlanır.
+5. Kullanıcı aile hesabını oluşturur.
+6. Kullanıcı çocuk profili ekler.
+7. İlk bakiye yükleme ekranı gösterilir.
+8. Çocuk için sanal kart oluşturulur.
+9. Fiziksel kart siparişi önerilir.
+
+8.2 Çocuk profili oluşturma
+
+Alanlar:
+
+* Ad
+* Doğum tarihi
+* Kullanıcı adı
+* Avatar
+* İlişki: kızım/oğlum/yeğenim vb.
+* Kart tipi: sanal / fiziksel
+* Varsayılan haftalık limit
+* Harçlık periyodu
+
+Çocuk hesabı ebeveyn hesabına bağlı olmalı. Çocuk tek başına finansal işlem yetkisine sahip olmamalı.
+
+8.3 Harçlık gönderme
+
+1. Ebeveyn çocuk profiline girer.
+2. “Harçlık gönder” butonuna basar.
+3. Tutar girer.
+4. Açıklama seçer: haftalık harçlık, ödül, acil para, hediye.
+5. Onaylar.
+6. Çocuk bildirim alır.
+7. İşlem geçmişine kayıt düşer.
+
+8.4 Otomatik harçlık
+
+Ebeveyn şu ayarları yapar:
+
+* Tutar
+* Sıklık: haftalık / iki haftada bir / aylık
+* Gün: pazartesi / cuma / ayın 1’i
+* Başlangıç tarihi
+* Otomatik durdurma limiti
+* Ebeveyn onayı gereksin mi?
+
+Örnek:
+
+Her pazartesi 150 TL gönder. Bakiye 500 TL üzerindeyse gönderme.
+
+8.5 Görev karşılığı ödül
+
+Ebeveyn görev oluşturur:
+
+* Görev adı: “Kitap oku”
+* Açıklama
+* Ödül: 50 TL
+* Son tarih
+* Tek seferlik / tekrarlı
+* Kanıt gerekli mi? Fotoğraf / ebeveyn onayı
+
+Çocuk görevi tamamlandı işaretler. Ebeveyn onaylarsa ödül bakiyeye aktarılır.
+
+8.6 Birikim hedefi
+
+Çocuk veya ebeveyn hedef oluşturur:
+
+* Hedef adı: Bisiklet
+* Hedef tutar: 3.000 TL
+* Görsel/ikon
+* Otomatik katkı: her harçlığın %20’si
+* Aile katkı linki açık/kapalı
+
+Çocuk ilerlemeyi yüzde olarak görür.
+
+⸻
+
+9. Limit ve Güvenlik Kuralları
+
+Kart kontrol özellikleri
+
+* Kartı dondur/aç
+* Günlük harcama limiti
+* Haftalık harcama limiti
+* Tek işlem limiti
+* ATM açık/kapalı
+* Online ödeme açık/kapalı
+* Temassız ödeme açık/kapalı
+* Yurtdışı ödeme açık/kapalı
+* Gece harcaması engeli
+* Merchant category code bazlı engel
+
+Örnek kategori ayarları
+
+Ebeveyn şu kategorileri yönetebilmelidir:
+
+* Market
+* Kırtasiye
+* Ulaşım
+* Yemek
+* Giyim
+* Oyun/dijital servisler
+* Online alışveriş
+* Eğlence
+* ATM
+* Yurtdışı
+
+MVP’de kategori yönetimi partner sağlayıcının kart işlem verisine bağlıdır. Her ödeme kuruluşu MCC kontrolünü aynı esneklikte sunmayabilir. Burada entegrasyon yeteneği belirleyici olacak. Şahane, ürün fikrinin kaderini yine başka şirketin API kalitesi belirliyor. Dijital çağın laneti.
+
+⸻
+
+10. Bildirimler
+
+Ebeveyn bildirimleri
+
+* Çocuk harcama yaptı
+* Harcama reddedildi
+* Limit aşıldı
+* Kart donduruldu/açıldı
+* Çocuk para istedi
+* Görev tamamlandı
+* Otomatik harçlık gönderildi
+* Bakiye azaldı
+* Şüpheli işlem
+
+Çocuk bildirimleri
+
+* Harçlık geldi
+* Görev ödülü geldi
+* Birikim hedefinde ilerleme
+* Kart harcaması
+* Limit uyarısı
+* Ebeveyn para isteğini onayladı/reddetti
+
+⸻
+
+11. Finansal Eğitim Katmanı
+
+MiniKart Aile’nin farkı burada büyür.
+
+İçerik tipi
+
+* 30 saniyelik mini ders
+* Kartlı quiz
+* Basit hikâye
+* Günlük finans görevi
+* Rozet sistemi
+
+İlk içerik başlıkları
+
+* Para nedir?
+* Harçlık nasıl planlanır?
+* İhtiyaç mı istek mi?
+* Birikim hedefi nasıl kurulur?
+* Kart güvenliği
+* Şifre paylaşmamak
+* Online alışverişte dikkat
+* Küçük harcamalar nasıl büyür?
+* Bağış ve paylaşma
+* Sabırlı birikim
+
+Örnek mini ders
+
+Başlık: İhtiyaç mı, istek mi?
+İçerik: Su almak ihtiyaçtır. Yeni oyun kostümü almak istek olabilir. İstek kötü değildir ama önce hedefini düşün.
+Quiz: “Okul servisi ödemesi ihtiyaç mı istek mi?”
+
+Bu kısmı iyi yaparsan marka sadece kart olmaz, ebeveynin gözünde “çocuğuma para bilinci kazandırıyor” seviyesine çıkar.
+
+⸻
+
+12. Gelir Modeli
+
+12.1 Ücretsiz paket
+
+* 1 çocuk profili
+* Sanal kart
+* Manuel harçlık gönderme
+* Temel harcama bildirimi
+* Basit limit
+
+Amaç: Kullanıcı kazanımı.
+
+12.2 Premium aile paketi
+
+* 2-4 çocuk profili
+* Otomatik harçlık
+* Görev/ödül sistemi
+* Birikim hedefleri
+* Gelişmiş limitler
+* Kategori kontrolü
+* Finansal eğitim içerikleri
+* Akraba katkı linki
+* Aylık rapor
+
+12.3 Ek gelirler
+
+* Fiziksel kart basım ücreti
+* Özel tasarım kart
+* Kart yenileme
+* Partner banka/e-para geliri
+* B2B okul/kurum paketleri
+* Premium finansal eğitim modülleri
+
+Kaçınılması gereken gelirler
+
+* Çocuklara reklam
+* Agresif kredi ürünü
+* Kumar/oyun benzeri ödül mekanikleri
+* Çocuk verisini pazarlama amaçlı kullanmak
+
+Çocuk ürünü yaparken “growth” diye her şeyi mubah sananlar var. Onları ürün ekibine değil, uzak bir adaya koymak lazım.
+
+⸻
+
+13. Regülasyon ve Uyum Notları
+
+Bu bölüm hukuki görüş değildir; fintech hukukçusu ve lisanslı partnerle doğrulanmalıdır.
+
+Ana ilkeler
+
+* Ürün kredi ürünü olarak konumlanmamalı.
+* Çocuk kendi başına finansal hesap açan ana müşteri olmamalı.
+* Ana müşteri ebeveyn/yasal temsilci olmalı.
+* Çocuk profili ebeveyn hesabına bağlı olmalı.
+* Para yükleme, saklama ve kart işlemleri lisanslı kuruluş üzerinden yürümeli.
+* KVKK kapsamında çocuk verisi özel dikkatle ele alınmalı.
+* MASAK/KYC yükümlülükleri partner yapıya göre belirlenmeli.
+* Kart ve ödeme altyapısında PCI-DSS kapsamı minimize edilmeli.
+
+Önerilen yapı
+
+MiniKart Aile = Teknoloji ve kullanıcı deneyimi sağlayıcısı
+Lisanslı e-para/banka partneri = Elektronik para/kart/ödeme sağlayıcısı
+
+TÖDEB’e göre elektronik para kuruluşları, bankalar ve PTT elektronik para ihracı faaliyeti yapabilir; temsilci modeliyle elektronik para kuruluşu adına hareket eden taraflar da kuruluşun faaliyet izni kapsamıyla sınırlı şekilde hizmet sunabilir. (todeb.org.tr⁠￼)
+
+⸻
+
+14. Teknik Mimari
+
+Ana bileşenler
+
+1. Parent Mobile App
+2. Child Mobile App
+3. Backend API
+4. Admin Panel
+5. Payment/E-money Provider Integration
+6. Card Processor Integration
+7. Notification Service
+8. Rules & Limits Engine
+9. Analytics Pipeline
+10. Audit & Compliance Logs
+
+Önerilen teknoloji
+
+Mobil
+
+* React Native / Expo
+* iOS + Android
+* Parent ve child app aynı kod tabanında rol bazlı ayrılabilir
+* Alternatif: iki ayrı uygulama
+
+Backend
+
+* Node.js/NestJS veya Python/FastAPI
+* PostgreSQL
+* Redis
+* Queue: BullMQ / RabbitMQ / SQS
+* Object storage: S3 uyumlu
+* Event logging
+
+Admin
+
+* Next.js
+* Role-based access control
+* Audit log zorunlu
+
+Auth
+
+* Telefon + OTP
+* Ebeveyn için biometrik giriş
+* Çocuk için PIN/avatar tabanlı giriş
+* Kritik işlemlerde ebeveyn doğrulaması
+
+⸻
+
+15. Veri Modeli
+
+Family
+
+* id
+* name
+* created_at
+* status
+
+ParentUser
+
+* id
+* family_id
+* full_name
+* phone
+* email
+* tckn_hash
+* kyc_status
+* role: owner / secondary_parent
+* created_at
+
+ChildProfile
+
+* id
+* family_id
+* parent_id
+* name
+* birth_date
+* avatar
+* username
+* status
+* created_at
+
+Wallet
+
+* id
+* owner_type: parent / child
+* owner_id
+* provider_wallet_id
+* balance
+* currency
+* status
+
+Card
+
+* id
+* child_id
+* provider_card_id
+* type: virtual / physical
+* status: active / frozen / cancelled
+* last4
+* created_at
+
+Transaction
+
+* id
+* wallet_id
+* card_id
+* amount
+* currency
+* merchant_name
+* merchant_category
+* mcc
+* status
+* provider_transaction_id
+* created_at
+
+AllowanceSchedule
+
+* id
+* child_id
+* amount
+* frequency
+* day_of_week
+* day_of_month
+* start_date
+* end_date
+* status
+
+Task
+
+* id
+* child_id
+* created_by_parent_id
+* title
+* description
+* reward_amount
+* due_date
+* recurrence
+* status
+
+SavingsGoal
+
+* id
+* child_id
+* title
+* target_amount
+* current_amount
+* icon
+* auto_contribution_rule
+* status
+
+SpendingRule
+
+* id
+* child_id
+* rule_type
+* category
+* limit_amount
+* period
+* is_allowed
+* status
+
+Notification
+
+* id
+* user_id
+* type
+* title
+* body
+* read_at
+* created_at
+
+AuditLog
+
+* id
+* actor_id
+* action
+* entity_type
+* entity_id
+* metadata
+* ip_address
+* created_at
+
+⸻
+
+16. API Taslağı
+
+Auth
+
+POST /auth/send-otp
+POST /auth/verify-otp
+POST /auth/logout
+
+Family
+
+POST /families
+GET /families/me
+
+Child
+
+POST /children
+GET /children
+GET /children/:id
+PATCH /children/:id
+
+Wallet
+
+GET /wallets/:id/balance
+POST /wallets/top-up
+POST /wallets/transfer-to-child
+
+Cards
+
+POST /children/:id/cards/virtual
+POST /children/:id/cards/physical
+POST /cards/:id/freeze
+POST /cards/:id/unfreeze
+GET /cards/:id/transactions
+
+Allowance
+
+POST /children/:id/allowance-schedules
+PATCH /allowance-schedules/:id
+DELETE /allowance-schedules/:id
+
+Tasks
+
+POST /children/:id/tasks
+POST /tasks/:id/complete
+POST /tasks/:id/approve
+POST /tasks/:id/reject
+
+Savings
+
+POST /children/:id/savings-goals
+POST /savings-goals/:id/contribute
+PATCH /savings-goals/:id
+
+Rules
+
+POST /children/:id/spending-rules
+PATCH /spending-rules/:id
+DELETE /spending-rules/:id
+
+Webhooks
+
+POST /webhooks/provider/transaction
+POST /webhooks/provider/card-status
+POST /webhooks/provider/kyc-status
+
+⸻
+
+17. Admin Panel
+
+Admin panel MVP’de mutlaka olmalı. Fintech ürünü yapıp admin panelsiz başlamak, arabayı frensiz yokuşa salmak gibi. Sonra herkes “ama staging’de çalışıyordu” diye ağlıyor.
+
+Admin özellikleri
+
+* Kullanıcı arama
+* Aile görüntüleme
+* Çocuk profili görüntüleme
+* Kart durumu görüntüleme
+* İşlem geçmişi
+* KYC durumu
+* Şikayet kaydı
+* Kart dondurma talebi
+* Manuel inceleme
+* Limit ihlalleri
+* Riskli işlem listesi
+* Audit log
+* Destek notları
+
+⸻
+
+18. Güvenlik
+
+Zorunlu ilkeler
+
+* Kart verisi sunucuda tutulmamalı.
+* Kart numarası gösterimi partnerin güvenli SDK/API yapısıyla yapılmalı.
+* Hassas veriler şifrelenmeli.
+* TCKN hashlenmeli veya tokenized saklanmalı.
+* Ebeveyn kritik işlemlerde tekrar doğrulanmalı.
+* Çocuk uygulamasında para gönderme yetkisi olmamalı.
+* Çocuk sadece para isteyebilmeli.
+* Role-based access control uygulanmalı.
+* Tüm finansal işlemler audit log’a yazılmalı.
+* Webhook imzaları doğrulanmalı.
+* Rate limit uygulanmalı.
+* Cihaz eşleştirme yapılmalı.
+
+Kritik işlem örnekleri
+
+* Yeni kart oluşturma
+* Kartı açma
+* Limit artırma
+* Yeni çocuk profili ekleme
+* Harçlık planı oluşturma
+* Banka/e-para hesabına para yükleme
+* Fiziksel kart siparişi
+* Ebeveyn e-posta/telefon değişikliği
+
+⸻
+
+19. Fraud ve Risk
+
+Risk sinyalleri
+
+* Kısa sürede çok fazla para yükleme
+* Çok sayıda başarısız ödeme
+* Olağandışı merchant
+* Gece saatlerinde yüksek harcama
+* Çok sık kart dondur/aç
+* Farklı cihazlardan giriş
+* Aynı telefonla çok aile hesabı
+* Akraba katkı linkinden şüpheli ödeme
+
+Risk aksiyonları
+
+* İşlemi reddet
+* Ebeveynden onay iste
+* Kartı geçici dondur
+* Admin incelemesine düşür
+* Partner sağlayıcıya risk bildirimi gönder
+
+⸻
+
+20. Tasarım İlkeleri
+
+Görsel ton
+
+* Pastel ama fazla bebeksi değil
+* Güven veren mavi/yeşil tonlar
+* Sıcak krem arka planlar
+* Yuvarlak kartlar
+* Büyük ikonlar
+* Ebeveyn ekranında daha sade ve ciddi yapı
+* Çocuk ekranında daha oyunlaştırılmış yapı
+
+Kullanıcı deneyimi
+
+* Ebeveyn için 3 dokunuşta para gönderme
+* Çocuk için tek ekranda bakiye + hedef + görev
+* Harcama bildirimleri çok anlaşılır
+* Finansal terimler çocuk diline çevrilmiş
+* Korkutucu banka dili yok
+
+Dil örnekleri
+
+Kötü:
+
+Limit aşımı nedeniyle işlem reddedildi.
+
+İyi:
+
+Bu harcama limitin üstünde kaldı. Ailenden izin isteyebilirsin.
+
+Kötü:
+
+Bakiye yetersiz.
+
+İyi:
+
+Bu alışveriş için yeterli paran yok. İstersen para isteği gönderebilirsin.
+
+⸻
+
+21. Başarı Metrikleri
+
+Aktivasyon
+
+* Kayıt tamamlayan ebeveyn oranı
+* KYC tamamlanma oranı
+* İlk çocuk profili oluşturma oranı
+* İlk para yükleme oranı
+* İlk kart oluşturma oranı
+* İlk harçlık gönderme oranı
+
+Kullanım
+
+* Haftalık aktif aile
+* Haftalık aktif çocuk
+* Çocuk başına işlem sayısı
+* Harçlık planı aktif kullanıcı oranı
+* Görev oluşturma oranı
+* Birikim hedefi oluşturma oranı
+
+Finansal
+
+* Toplam yüklenen bakiye
+* Kart işlem hacmi
+* Aylık tekrar eden gelir
+* Premium dönüşüm oranı
+* Kart başına gelir
+* Aile başına gelir
+
+Güvenlik
+
+* Reddedilen işlem sayısı
+* Şüpheli işlem oranı
+* Kart dondurma sayısı
+* Destek talebi oranı
+* Chargeback/itiraz oranı
+
+Retention
+
+* D7 retention
+* D30 retention
+* 3 aylık aktif aile oranı
+* Harçlık planı kullananlarda retention
+* Birikim hedefi kullananlarda retention
+
+⸻
+
+22. Lansman Planı
+
+Faz 0: Doğrulama
+
+Süre: 2-4 hafta
+
+* 20 ebeveyn görüşmesi
+* 10 çocuk gözlem/görüşmesi
+* 3 ödeme/e-para kuruluşu ile partnerlik görüşmesi
+* 2 fintech hukukçusu görüşmesi
+* Marka tescil ön araştırması
+* MiniKart Aile landing page
+* Waitlist
+
+Faz 1: Kapalı alfa
+
+Süre: 6-8 hafta
+
+* 50-100 aile
+* Sanal kart
+* Manuel harçlık
+* Temel limit
+* Harcama bildirimi
+* Basit çocuk ekranı
+
+Amaç: Gerçek aile davranışını görmek.
+
+Faz 2: Beta
+
+Süre: 8-12 hafta
+
+* 1.000 aile
+* Fiziksel kart
+* Otomatik harçlık
+* Görev/ödül
+* Birikim hedefi
+* Premium paket testi
+
+Faz 3: Kamu lansmanı
+
+* İstanbul odaklı lansman
+* Anne-baba influencerları
+* Finansal okuryazarlık kampanyası
+* Okul çevresi partnerlikleri
+* Çocuk güvenliği vurgusu
+* “İlk kart deneyimi” kampanyası
+
+⸻
+
+23. Partner İhtiyaçları
+
+Elektronik para / ödeme partneri
+
+Gerekenler:
+
+* Sanal kart oluşturma
+* Fiziksel kart basımı
+* Wallet/bakiye yönetimi
+* Para yükleme
+* Kart işlem webhookları
+* Kart dondurma/açma
+* Limit yönetimi
+* MCC/kategori yönetimi
+* KYC desteği
+* Chargeback/itiraz süreci
+* Regülasyon uyumu
+
+Kart basım partneri
+
+Gerekenler:
+
+* Çocuk dostu kart tasarımı
+* NFC/temassız
+* İsimli kart
+* Teslimat takibi
+* Kayıp/yenileme süreci
+
+Hukuk/compliance partneri
+
+Gerekenler:
+
+* 6493 uyumu
+* KVKK
+* Açık rıza metinleri
+* Çocuk verisi politikası
+* Kullanıcı sözleşmesi
+* Ön bilgilendirme formları
+* MASAK yükümlülükleri
+* Reklam ve pazarlama dili kontrolü
+
+⸻
+
+24. Riskler
+
+Regülasyon riski
+
+Çözüm: Lisanslı partnerle çıkmak, çocuk hesabını ebeveyne bağlı tasarlamak.
+
+Banka rekabeti
+
+Çözüm: Banka gibi değil, aile deneyimi gibi konumlanmak.
+
+Güven riski
+
+Çözüm: Şeffaf limitler, anlık bildirimler, kart dondurma, güçlü destek.
+
+Çocuk verisi riski
+
+Çözüm: Minimum veri toplama, ebeveyn izni, açık KVKK politikası.
+
+Kart operasyonu riski
+
+Çözüm: İlk sürümde sanal kart ağırlıklı başlamak.
+
+Ürün karmaşıklığı
+
+Çözüm: MVP’de sadece harçlık + kart + limit + bildirim + birikim.
+
+⸻
+
+25. Örnek Ekranlar
+
+Ebeveyn ana ekranı
+
+* Toplam aile bakiyesi
+* Çocuk kartları
+* Son harcamalar
+* Hızlı para gönder
+* Kartı dondur
+* Harçlık planı
+* Uyarılar
+
+Çocuk ana ekranı
+
+* Bakiye
+* Kart görseli
+* Birikim hedefi ilerleme çubuğu
+* Bugünkü görevler
+* Para iste butonu
+* Son harcamalar
+
+Harçlık ekranı
+
+* Tek seferlik gönder
+* Otomatik plan oluştur
+* Açıklama ekle
+* Hedefe aktarım yüzdesi
+
+Birikim ekranı
+
+* Hedef kartları
+* Hedef tutarı
+* Kalan tutar
+* Katkı yap
+* Aileden katkı iste
+
+Görev ekranı
+
+* Aktif görevler
+* Tamamlanan görevler
+* Bekleyen onaylar
+* Ödül tutarları
+
+⸻
+
+26. İlk Sürüm İçin Net Gereksinim Listesi
+
+Must-have
+
+* Ebeveyn kayıt
+* KYC partner akışı
+* Çocuk profili
+* Sanal kart
+* Para yükleme
+* Harçlık gönderme
+* İşlem geçmişi
+* Kart dondurma
+* Harcama bildirimi
+* Basit limit
+* Çocuk uygulaması
+* Admin panel
+* Audit log
+
+Should-have
+
+* Fiziksel kart
+* Otomatik harçlık
+* Birikim hedefi
+* Görev/ödül
+* Kategori limiti
+* Para isteği
+* Akraba katkı linki
+
+Could-have
+
+* Finansal eğitim oyunları
+* Rozetler
+* Okul kantin entegrasyonu
+* BES/altın/fon entegrasyonu
+* Aile raporu
+* Çocuklara özel güvenli alışveriş alanı
+
+Won’t-have, MVP’de
+
+* Kredi
+* Kripto
+* Açık sosyal ağ
+* Çocuklara reklam
+* Geniş yatırım ürünleri
+* Marketplace
+
+⸻
+
+27. Örnek Landing Page Metni
+
+Hero
+
+MiniKart Aile
+Çocuğun ilk kartı, ailenin kontrolünde.
+
+Harçlık gönderin, limit belirleyin, harcamaları takip edin. Çocuğunuz parayı güvenli şekilde kullanmayı öğrensin.
+
+CTA
+
+Bekleme listesine katıl
+
+Özellikler
+
+Güvenli kart
+Çocuğunuz harcamalarını kendi kartıyla yapar, kontrol sizde kalır.
+
+Anlık bildirim
+Her harcamayı anında görün.
+
+Harçlık planı
+Haftalık veya aylık otomatik harçlık tanımlayın.
+
+Birikim hedefleri
+Çocuğunuz bisiklet, kitap veya oyun için hedef koyup birikim yapmayı öğrensin.
+
+Görev ve ödül
+Sorumlulukları küçük ödüllerle destekleyin.
+
+⸻
+
+28. İlk 90 Gün Yol Haritası
+
+Gün 1-15
+
+* Marka tescil ön araştırması
+* Landing page
+* 20 ebeveyn görüşmesi
+* Partner listesi
+* Hukuk/compliance görüşmeleri
+* Figma low-fi wireframe
+
+Gün 15-30
+
+* Ebeveyn app prototipi
+* Çocuk app prototipi
+* Partner API değerlendirme
+* Veri modeli
+* Backend başlangıcı
+* Waitlist kampanyası
+
+Gün 30-60
+
+* Auth
+* Ebeveyn hesabı
+* Çocuk profili
+* Wallet entegrasyonu
+* Sanal kart entegrasyonu
+* Harçlık gönderme
+* İşlem webhookları
+* Bildirimler
+* Admin panel MVP
+
+Gün 60-90
+
+* Kapalı alfa
+* 50 aile testi
+* Hata düzeltmeleri
+* Fiziksel kart operasyon hazırlığı
+* Otomatik harçlık
+* Birikim hedefi
+* Görev/ödül
+* Beta lansman hazırlığı
+
+⸻
+
+29. Açık Sorular
+
+* Hangi yaş aralığıyla başlanacak: 8-12 mi, 10-14 mü?
+* Çocuk uygulaması ayrı mı olacak, ebeveyn uygulamasında çocuk modu mu?
+* İlk partner banka mı, elektronik para kuruluşu mu?
+* Fiziksel kart MVP’de olacak mı, beta’ya mı kalacak?
+* Kart ücretsiz mi olacak, ücretli mi?
+* Premium fiyatlandırma nasıl test edilecek?
+* MCC bazlı kategori kontrolünü partner sağlayabiliyor mu?
+* Akraba katkı linki regülasyon açısından nasıl tasarlanacak?
+* Çocuk verisi ne kadar minimumda tutulabilir?
+* Okul/kantin entegrasyonu stratejik mi, yoksa dikkat dağıtıcı mı?
+
+⸻
+
+30. Net Ürün Kararı
+
+MiniKart Aile’nin ilk sürümü şu cümleyi kusursuz gerçekleştirmeli:
+
+“Ebeveyn çocuğuna güvenli şekilde harçlık gönderebilsin, çocuk da kartıyla kontrollü harcama yapıp para biriktirmeyi öğrensin.”
+
+Bundan fazlası sonraki sürüm. İlk hedef bu.
+
+Eğer MVP bu akışı gerçekten pürüzsüz yaparsa ürünün omurgası sağlam olur. Sonra görevler, akraba katkısı, finansal eğitim, okul entegrasyonu, özel kart tasarımları, BES/altın gibi katmanlar eklenir.
+
+İlk savaş kartta değil, alışkanlıkta kazanılacak. Kart plastiği herkes basar. Aile davranışını sahiplenen marka kazanır.
