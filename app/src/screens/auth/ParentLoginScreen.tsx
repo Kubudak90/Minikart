@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { Screen, H1, Muted, Field, Btn, Card } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing } from '../../theme/theme';
@@ -14,8 +14,8 @@ export function ParentLoginScreen() {
 
   return (
     <Screen>
-      <View style={{ gap: 6, marginTop: spacing.md }}>
-        <Text style={{ fontSize: 40 }}>👋</Text>
+      <View style={{ gap: 8, marginTop: spacing.md }}>
+        <Image source={require('../../../assets/logos/logo-horizontal.png')} style={{ width: 170, height: 56, resizeMode: 'contain' }} />
         <H1>Ebeveyn Girişi</H1>
         <Muted>Aile hesabını yönetmek için telefonunla giriş yap.</Muted>
       </View>

@@ -1,53 +1,68 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Btn, H1, Muted } from '../../components/ui';
-import { colors, spacing, radius, font, shadow } from '../../theme/theme';
+import { Icon, IconName } from '../../components/Icon';
+import { colors, spacing, radius, font, fonts } from '../../theme/theme';
 
 export function WelcomeScreen({ navigation }: any) {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
-      <View style={s.wrap}>
-        <View style={s.hero}>
-          <View style={s.logo}><Text style={{ fontSize: 44 }}>💳</Text></View>
-          <H1 style={{ fontSize: 34, textAlign: 'center' }}>MiniKart Aile</H1>
-          <Text style={s.tag}>Çocuğun ilk kartı, ailenin kontrolünde.</Text>
-          <Muted style={{ textAlign: 'center', marginTop: 6, lineHeight: 20 }}>
-            Harçlık gönderin, limit belirleyin, harcamaları takip edin. Çocuğunuz parayı güvenle kullanmayı öğrensin.
-          </Muted>
-        </View>
+    <LinearGradient colors={['#8E78FF', '#5A40DB']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={s.wrap}>
+          <View style={{ alignItems: 'center', gap: spacing.md }}>
+            <Image source={require('../../../assets/logos/logo-reversed.png')} style={s.logo} />
+            <Image source={require('../../../assets/illustrations/family-happy.png')} style={s.hero} />
+            <Text style={s.tag}>Çocuğun ilk kartı,{'\n'}ailenin kontrolünde.</Text>
+            <Text style={s.sub}>
+              Harçlık gönderin, limit belirleyin, harcamaları takip edin. Çocuğunuz parayı güvenle kullanmayı öğrensin.
+            </Text>
+          </View>
 
-        <View style={s.featureRow}>
-          <Feature icon="🔒" label="Güvenli kart" />
-          <Feature icon="🔔" label="Anlık bildirim" />
-          <Feature icon="🎯" label="Birikim hedefi" />
-        </View>
+          <View style={s.featureRow}>
+            <Feature icon="shield" label="Güvenli kart" />
+            <Feature icon="bell" label="Anlık bildirim" />
+            <Feature icon="target" label="Birikim hedefi" />
+          </View>
 
-        <View style={{ gap: spacing.md }}>
-          <Btn title="👨‍👩‍👧 Ebeveyn olarak gir" onPress={() => navigation.navigate('ParentLogin')} />
-          <Btn title="🧒 Çocuk olarak gir" kind="secondary" onPress={() => navigation.navigate('ChildLogin')} />
-          <Muted style={{ textAlign: 'center', marginTop: 4 }}>Demo sürümü • gerçek ödeme yapılmaz</Muted>
+          <View style={{ gap: spacing.md }}>
+            <Pressable style={({ pressed }) => [s.primaryBtn, { transform: [{ scale: pressed ? 0.97 : 1 }] }]} onPress={() => navigation.navigate('ParentLogin')}>
+              <Icon name="users" size={18} color={colors.primaryDark} />
+              <Text style={s.primaryText}>Ebeveyn olarak gir</Text>
+            </Pressable>
+            <Pressable style={({ pressed }) => [s.ghostBtn, { transform: [{ scale: pressed ? 0.97 : 1 }] }]} onPress={() => navigation.navigate('ChildLogin')}>
+              <Icon name="star" size={18} color="#fff" />
+              <Text style={s.ghostText}>Çocuk olarak gir</Text>
+            </Pressable>
+            <Text style={s.demo}>Demo sürümü • gerçek ödeme yapılmaz</Text>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
-function Feature({ icon, label }: { icon: string; label: string }) {
+function Feature({ icon, label }: { icon: IconName; label: string }) {
   return (
     <View style={s.feature}>
-      <Text style={{ fontSize: 24 }}>{icon}</Text>
+      <Icon name={icon} size={22} color="#fff" />
       <Text style={s.featureLabel}>{label}</Text>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  wrap: { flex: 1, padding: spacing.xl, justifyContent: 'space-between', paddingVertical: spacing.xxl },
-  hero: { alignItems: 'center', gap: 6, marginTop: spacing.xxl },
-  logo: { width: 96, height: 96, borderRadius: 28, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md, ...shadow.soft },
-  tag: { fontSize: font.h3, fontWeight: '700', color: colors.primary, textAlign: 'center', marginTop: 4 },
-  featureRow: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md },
-  feature: { flex: 1, backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.md, alignItems: 'center', gap: 6, ...shadow.soft },
-  featureLabel: { fontSize: font.tiny, fontWeight: '600', color: colors.textMuted, textAlign: 'center' },
+  wrap: { flex: 1, padding: spacing.xl, justifyContent: 'space-between', paddingVertical: spacing.xl },
+  logo: { width: 190, height: 64, resizeMode: 'contain', marginTop: spacing.sm },
+  hero: { width: 240, height: 178, resizeMode: 'contain' },
+  tag: { fontFamily: fonts.headingX, fontSize: 25, color: '#fff', textAlign: 'center', lineHeight: 32 },
+  sub: { fontFamily: fonts.body, fontSize: font.body, color: '#ffffffd8', textAlign: 'center', lineHeight: 21, paddingHorizontal: spacing.sm },
+  featureRow: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.sm },
+  feature: { flex: 1, backgroundColor: '#ffffff1f', borderRadius: radius.md, paddingVertical: spacing.lg, alignItems: 'center', gap: 8 },
+  featureLabel: { fontFamily: fonts.semibold, fontSize: font.tiny, color: '#fff', textAlign: 'center' },
+  primaryBtn: { height: 52, borderRadius: radius.pill, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  primaryText: { fontFamily: fonts.bold, fontSize: font.body, color: colors.primaryDark },
+  ghostBtn: { height: 52, borderRadius: radius.pill, borderWidth: 1.5, borderColor: '#ffffff66', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  ghostText: { fontFamily: fonts.bold, fontSize: font.body, color: '#fff' },
+  demo: { fontFamily: fonts.body, fontSize: font.tiny, color: '#ffffffb0', textAlign: 'center', marginTop: 2 },
 });

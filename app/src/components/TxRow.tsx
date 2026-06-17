@@ -1,36 +1,46 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Transaction } from '../store/types';
-import { colors, font } from '../theme/theme';
-import { money, timeAgo, CATEGORY_META } from '../utils/format';
+import { colors, font, fonts } from '../theme/theme';
+import { money, timeAgo } from '../utils/format';
+import { Icon, IconName } from './Icon';
 
-const TYPE_META: Record<string, { icon: string; label: string }> = {
-  topup: { icon: '⬆️', label: 'Bakiye yükleme' },
-  allowance: { icon: '💛', label: 'Harçlık' },
-  reward: { icon: '🏅', label: 'Görev ödülü' },
-  goal_contribution: { icon: '🎯', label: 'Birikim' },
-  request_fulfilled: { icon: '✅', label: 'Para isteği' },
-  spend: { icon: '🛍️', label: 'Harcama' },
+const CAT_ICON: Record<string, IconName> = {
+  market: 'cart', kirtasiye: 'pencil', ulasim: 'bus', yemek: 'food', giyim: 'shirt',
+  oyun: 'game', online: 'package', eglence: 'ferris', atm: 'atm',
+};
+const CAT_LABEL: Record<string, string> = {
+  market: 'Market', kirtasiye: 'Kırtasiye', ulasim: 'Ulaşım', yemek: 'Yemek', giyim: 'Giyim',
+  oyun: 'Oyun / Dijital', online: 'Online Alışveriş', eglence: 'Eğlence', atm: 'ATM',
+};
+const TYPE_META: Record<string, { icon: IconName; label: string }> = {
+  topup: { icon: 'arrow-up', label: 'Bakiye yükleme' },
+  allowance: { icon: 'hand-coins', label: 'Harçlık' },
+  reward: { icon: 'star', label: 'Görev ödülü' },
+  goal_contribution: { icon: 'target', label: 'Birikim' },
+  request_fulfilled: { icon: 'check', label: 'Para isteği' },
+  spend: { icon: 'bag', label: 'Harcama' },
 };
 
 export function TxRow({ tx }: { tx: Transaction }) {
-  const meta = tx.category ? CATEGORY_META[tx.category] : undefined;
-  const icon = meta?.icon || TYPE_META[tx.type]?.icon || '•';
+  const icon: IconName = tx.category ? CAT_ICON[tx.category] : TYPE_META[tx.type]?.icon || 'receipt';
+  const label = tx.category ? CAT_LABEL[tx.category] : TYPE_META[tx.type]?.label || '';
   const declined = tx.status === 'declined';
   const positive = tx.amount > 0;
+  const tint = declined ? colors.red : positive ? colors.green : colors.text;
   return (
     <View style={s.row}>
       <View style={[s.iconWrap, { backgroundColor: declined ? colors.redSoft : positive ? colors.greenSoft : colors.surfaceAlt }]}>
-        <Text style={{ fontSize: 18 }}>{icon}</Text>
+        <Icon name={icon} size={19} color={declined ? colors.red : positive ? colors.green : colors.text} />
       </View>
       <View style={{ flex: 1 }}>
         <Text style={s.title} numberOfLines={1}>{tx.description}</Text>
         <Text style={s.sub} numberOfLines={1}>
-          {declined ? '⛔ Reddedildi' : (meta?.label || TYPE_META[tx.type]?.label || '')} • {timeAgo(tx.createdAt)}
+          {declined ? 'Reddedildi' : label} • {timeAgo(tx.createdAt)}
         </Text>
         {declined && tx.declineReason ? <Text style={s.reason} numberOfLines={2}>{tx.declineReason}</Text> : null}
       </View>
-      <Text style={[s.amount, { color: declined ? colors.textFaint : positive ? colors.green : colors.text, textDecorationLine: declined ? 'line-through' : 'none' }]}>
+      <Text style={[s.amount, { color: declined ? colors.textFaint : tint, textDecorationLine: declined ? 'line-through' : 'none' }]}>
         {positive ? '+' : ''}{money(tx.amount)}
       </Text>
     </View>
@@ -40,8 +50,8 @@ export function TxRow({ tx }: { tx: Transaction }) {
 const s = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10 },
   iconWrap: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  title: { fontSize: font.body, fontWeight: '600', color: colors.text },
-  sub: { fontSize: font.tiny, color: colors.textMuted, marginTop: 2 },
-  reason: { fontSize: font.tiny, color: colors.red, marginTop: 2 },
-  amount: { fontSize: font.body, fontWeight: '800' },
+  title: { fontFamily: fonts.semibold, fontSize: font.body, color: colors.text },
+  sub: { fontFamily: fonts.body, fontSize: font.tiny, color: colors.textMuted, marginTop: 2 },
+  reason: { fontFamily: fonts.body, fontSize: font.tiny, color: colors.red, marginTop: 2 },
+  amount: { fontFamily: fonts.bold, fontSize: font.body, fontVariant: ['tabular-nums'] },
 });

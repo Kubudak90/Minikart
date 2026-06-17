@@ -29,7 +29,7 @@ export function ChildSavingsScreen() {
         <Muted>Hedeflerin için buradan biriktirebilirsin 🎯</Muted>
       </Card>
 
-      {goals.length === 0 && <Empty icon="🎯" title="Hedef yok" sub="Ailenle birlikte bir birikim hedefi oluşturabilirsin." />}
+      {goals.length === 0 && <Empty image={require('../../../assets/illustrations/piggy-saving.png')} title="Hedef yok" sub="Ailenle birlikte bir birikim hedefi oluşturabilirsin." />}
 
       {goals.map((g) => {
         const pct = Math.round((g.currentAmount / g.targetAmount) * 100);

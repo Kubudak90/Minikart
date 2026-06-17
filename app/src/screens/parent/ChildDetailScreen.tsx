@@ -3,19 +3,20 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Avatar, Divider, Empty, ToggleRow, Pill } from '../../components/ui';
 import { CardVisual } from '../../components/CardVisual';
 import { TxRow } from '../../components/TxRow';
+import { Icon, IconName } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
-import { colors, spacing, radius, font } from '../../theme/theme';
+import { colors, spacing, radius, font, fonts, shadow } from '../../theme/theme';
 import { money, age } from '../../utils/format';
 
-const ACTIONS: { icon: string; label: string; route: string }[] = [
-  { icon: '💛', label: 'Harçlık Gönder', route: 'SendAllowance' },
-  { icon: '🔁', label: 'Otomatik Harçlık', route: 'Schedules' },
-  { icon: '📊', label: 'Limitler', route: 'Limits' },
-  { icon: '🏷️', label: 'Kategoriler', route: 'Categories' },
-  { icon: '🎯', label: 'Birikim', route: 'Savings' },
-  { icon: '📋', label: 'Görevler', route: 'Tasks' },
-  { icon: '🛠️', label: 'Kart Kontrol', route: 'CardControls' },
-  { icon: '🧪', label: 'Harcama Testi', route: 'SimulateSpend' },
+const ACTIONS: { icon: IconName; label: string; route: string; tint?: string; bg?: string }[] = [
+  { icon: 'hand-coins', label: 'Harçlık Gönder', route: 'SendAllowance', tint: colors.green, bg: colors.greenSoft },
+  { icon: 'repeat', label: 'Otomatik Harçlık', route: 'Schedules' },
+  { icon: 'sliders', label: 'Limitler', route: 'Limits' },
+  { icon: 'tag', label: 'Kategoriler', route: 'Categories' },
+  { icon: 'target', label: 'Birikim', route: 'Savings' },
+  { icon: 'tasks', label: 'Görevler', route: 'Tasks' },
+  { icon: 'card', label: 'Kart Kontrol', route: 'CardControls' },
+  { icon: 'flask', label: 'Harcama Testi', route: 'SimulateSpend' },
 ];
 
 export function ChildDetailScreen({ route, navigation }: any) {
@@ -47,7 +48,7 @@ export function ChildDetailScreen({ route, navigation }: any) {
           <CardVisual card={card} name={child.name} color={child.color} />
           <Card>
             <ToggleRow
-              icon="❄️"
+              icon="snowflake"
               label="Kartı dondur"
               sub={card.status === 'frozen' ? 'Kart şu an dondurulmuş' : 'Kart aktif, harcama yapılabilir'}
               value={card.status === 'frozen'}
@@ -56,28 +57,30 @@ export function ChildDetailScreen({ route, navigation }: any) {
             {card.type === 'virtual' && !card.physicalRequested && (
               <>
                 <Divider />
-                <Btn title="📮 Fiziksel kart iste" kind="ghost" small onPress={() => requestPhysicalCard(childId)} />
+                <Btn title="Fiziksel kart iste" icon="send" kind="ghost" small onPress={() => requestPhysicalCard(childId)} />
               </>
             )}
             {card.physicalRequested && card.type === 'virtual' && (
-              <Pill text="📮 Fiziksel kart yolda" color={colors.amber} bg={colors.amberSoft} />
+              <Pill text="Fiziksel kart yolda" color={colors.amber} bg={colors.amberSoft} />
             )}
           </Card>
         </>
       ) : (
         <Card style={{ alignItems: 'center', gap: spacing.md }}>
-          <Text style={{ fontSize: 40 }}>💳</Text>
+          <Icon name="card" size={40} color={colors.primary} />
           <H2>Henüz kart yok</H2>
           <Muted style={{ textAlign: 'center' }}>{child.name} için bir sanal kart oluştur, hemen kullanmaya başlasın.</Muted>
-          <Btn title="Sanal kart oluştur" onPress={() => createVirtualCard(childId)} />
+          <Btn title="Sanal kart oluştur" icon="plus" onPress={() => createVirtualCard(childId)} />
         </Card>
       )}
 
       {/* Aksiyon ızgarası */}
       <View style={s.grid}>
         {ACTIONS.map((a) => (
-          <Pressable key={a.route} style={({ pressed }) => [s.tile, pressed && { opacity: 0.7 }]} onPress={() => navigation.navigate(a.route, { childId })}>
-            <Text style={{ fontSize: 26 }}>{a.icon}</Text>
+          <Pressable key={a.route} style={({ pressed }) => [s.tile, pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] }]} onPress={() => navigation.navigate(a.route, { childId })}>
+            <View style={[s.tileIcon, { backgroundColor: a.bg || colors.lavender }]}>
+              <Icon name={a.icon} size={22} color={a.tint || colors.primary} />
+            </View>
             <Text style={s.tileLabel}>{a.label}</Text>
           </Pressable>
         ))}
@@ -104,6 +107,7 @@ export function ChildDetailScreen({ route, navigation }: any) {
 
 const s = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  tile: { width: '47%', flexGrow: 1, backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: spacing.lg, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: colors.border },
-  tileLabel: { fontSize: font.small, fontWeight: '600', color: colors.text },
+  tile: { width: '47%', flexGrow: 1, backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: spacing.lg, alignItems: 'center', gap: 10, ...shadow.soft },
+  tileIcon: { width: 46, height: 46, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  tileLabel: { fontFamily: fonts.semibold, fontSize: font.small, color: colors.text },
 });

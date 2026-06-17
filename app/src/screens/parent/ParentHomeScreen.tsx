@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Screen, H1, H2, Muted, Card, Btn, Avatar, Pill, Divider, Empty } from '../../components/ui';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Screen, H1, H2, Muted, Card, Btn, Avatar, Pill, Divider, Empty, Money } from '../../components/ui';
 import { TxRow } from '../../components/TxRow';
+import { Icon } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
-import { colors, spacing, radius, font, shadow } from '../../theme/theme';
+import { colors, spacing, radius, font, fonts, shadow, gradients } from '../../theme/theme';
 import { money, age } from '../../utils/format';
 
 export function ParentHomeScreen({ navigation }: any) {
@@ -23,14 +25,17 @@ export function ParentHomeScreen({ navigation }: any) {
       </View>
 
       {/* Aile cüzdanı */}
-      <View style={[s.walletCard, shadow.card]}>
-        <Text style={s.walletLabel}>Aile Bakiyesi</Text>
-        <Text style={s.walletBalance}>{money(fam?.balance || 0)}</Text>
-        <View style={{ flexDirection: 'row', gap: spacing.sm, marginTop: spacing.sm }}>
-          <Btn title="＋ Bakiye Yükle" kind="secondary" small style={{ flex: 1 }} onPress={() => navigation.navigate('TopUp')} />
-          <Btn title="Çocuk Ekle" kind="ghost" small style={{ flex: 1, borderColor: '#ffffff55' }} onPress={() => navigation.navigate('AddChild')} />
+      <LinearGradient colors={gradients.card} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[s.walletCard, shadow.purple]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Icon name="wallet" size={18} color="#ffffffcc" />
+          <Text style={s.walletLabel}>Aile Bakiyesi</Text>
         </View>
-      </View>
+        <Money style={s.walletBalance}>{money(fam?.balance || 0)}</Money>
+        <View style={{ flexDirection: 'row', gap: spacing.sm, marginTop: spacing.sm }}>
+          <Btn title="Bakiye Yükle" icon="plus" kind="secondary" small style={{ flex: 1 }} onPress={() => navigation.navigate('TopUp')} />
+          <Btn title="Çocuk Ekle" icon="users" kind="secondary" small style={{ flex: 1 }} onPress={() => navigation.navigate('AddChild')} />
+        </View>
+      </LinearGradient>
 
       {/* Çocuklar */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -52,10 +57,10 @@ export function ParentHomeScreen({ navigation }: any) {
                 <Muted>{age(c.birthDate)} yaş • @{c.username}</Muted>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <Text style={s.childBalance}>{money(w?.balance || 0)}</Text>
+                <Money style={s.childBalance}>{money(w?.balance || 0)}</Money>
                 {card ? (
                   <Pill
-                    text={card.status === 'frozen' ? '❄️ Dondu' : card.type === 'virtual' ? 'Sanal kart' : 'Fiziksel kart'}
+                    text={card.status === 'frozen' ? 'Donduruldu' : card.type === 'virtual' ? 'Sanal kart' : 'Fiziksel kart'}
                     color={card.status === 'frozen' ? colors.red : colors.green}
                     bg={card.status === 'frozen' ? colors.redSoft : colors.greenSoft}
                   />
@@ -66,8 +71,8 @@ export function ParentHomeScreen({ navigation }: any) {
             </View>
             <Divider />
             <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-              <Btn title="💛 Harçlık" small kind="secondary" style={{ flex: 1 }} onPress={() => navigation.navigate('SendAllowance', { childId: c.id })} />
-              <Btn title="🛠️ Kart" small kind="ghost" style={{ flex: 1 }} onPress={() => navigation.navigate('CardControls', { childId: c.id })} />
+              <Btn title="Harçlık" icon="hand-coins" small kind="secondary" style={{ flex: 1 }} onPress={() => navigation.navigate('SendAllowance', { childId: c.id })} />
+              <Btn title="Kart" icon="sliders" small kind="ghost" style={{ flex: 1 }} onPress={() => navigation.navigate('CardControls', { childId: c.id })} />
             </View>
           </Card>
         );
@@ -92,9 +97,9 @@ export function ParentHomeScreen({ navigation }: any) {
 }
 
 const s = StyleSheet.create({
-  walletCard: { backgroundColor: colors.primary, borderRadius: radius.xl, padding: spacing.xl, gap: 2 },
-  walletLabel: { color: '#ffffffcc', fontSize: font.small, fontWeight: '600' },
-  walletBalance: { color: '#fff', fontSize: 36, fontWeight: '800', letterSpacing: -1 },
-  childName: { fontSize: font.h3, fontWeight: '700', color: colors.text },
-  childBalance: { fontSize: font.h3, fontWeight: '800', color: colors.text },
+  walletCard: { borderRadius: radius.xl, padding: spacing.xl, gap: 4 },
+  walletLabel: { color: '#ffffffcc', fontSize: font.small, fontFamily: fonts.semibold },
+  walletBalance: { color: '#fff', fontSize: 36, fontFamily: fonts.headingX, letterSpacing: -1 },
+  childName: { fontSize: font.h3, fontFamily: fonts.heading, color: colors.text },
+  childBalance: { fontSize: font.h3, fontFamily: fonts.bold, color: colors.text },
 });

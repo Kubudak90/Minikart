@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { Screen, H2, Muted, Card, Pill } from '../../components/ui';
-import { colors, spacing, radius, font } from '../../theme/theme';
+import { colors, spacing, radius, font, fonts } from '../../theme/theme';
 
 // Spec §11 Finansal eğitim katmanı — 30 sn mini dersler + quiz + rozetler.
 interface Lesson {
@@ -84,15 +84,18 @@ export function ChildLearnScreen() {
 
   return (
     <Screen bg={colors.bgChild}>
-      <Card style={{ backgroundColor: colors.purple }}>
-        <Text style={{ color: '#fff', fontWeight: '800', fontSize: font.h2 }}>Para Okulu 💡</Text>
-        <Text style={{ color: '#ffffffdd' }}>Mini dersleri tamamla, rozet kazan!</Text>
-        <View style={{ flexDirection: 'row', gap: 6, marginTop: spacing.sm }}>
-          {LESSONS.map((l) => (
-            <Text key={l.id} style={{ fontSize: 20, opacity: done[l.id] ? 1 : 0.35 }}>🏅</Text>
-          ))}
-          <Text style={{ color: '#fff', fontWeight: '700', marginLeft: 6 }}>{count}/{LESSONS.length}</Text>
+      <Card style={{ backgroundColor: colors.purple, flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: '#fff', fontFamily: fonts.headingX, fontSize: font.h2 }}>Para Okulu 💡</Text>
+          <Text style={{ color: '#ffffffdd', fontFamily: fonts.body, marginTop: 2 }}>Mini dersleri tamamla, rozet kazan!</Text>
+          <View style={{ flexDirection: 'row', gap: 6, marginTop: spacing.sm, alignItems: 'center' }}>
+            {LESSONS.map((l) => (
+              <Text key={l.id} style={{ fontSize: 18, opacity: done[l.id] ? 1 : 0.35 }}>🏅</Text>
+            ))}
+            <Text style={{ color: '#fff', fontFamily: fonts.bold, marginLeft: 4 }}>{count}/{LESSONS.length}</Text>
+          </View>
         </View>
+        <Image source={require('../../../assets/illustrations/education.png')} style={{ width: 92, height: 92, resizeMode: 'contain' }} />
       </Card>
 
       {LESSONS.map((l) => (

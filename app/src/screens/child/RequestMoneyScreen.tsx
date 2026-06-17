@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
@@ -19,7 +19,7 @@ export function RequestMoneyScreen({ navigation }: any) {
     return (
       <Screen bg={colors.bgChild}>
         <Card style={{ alignItems: 'center', gap: spacing.md, marginTop: spacing.xl }}>
-          <Text style={{ fontSize: 48 }}>📨</Text>
+          <Image source={require('../../../assets/illustrations/request-money.png')} style={{ width: 200, height: 150, resizeMode: 'contain' }} />
           <H2>İsteğin gönderildi!</H2>
           <Muted style={{ textAlign: 'center' }}>Ailen isteğini görecek ve onaylarsa paran hesabına eklenecek.</Muted>
           <Btn title="Tamam" onPress={() => navigation.goBack()} />

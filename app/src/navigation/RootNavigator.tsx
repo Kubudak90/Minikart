@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useApp } from '../store/AppContext';
-import { colors, font } from '../theme/theme';
+import { colors, font, fonts } from '../theme/theme';
+import { Icon, IconName } from '../components/Icon';
 import { ParentStackParamList, ChildStackParamList } from './types';
 
 // Auth
@@ -49,14 +49,14 @@ const headerOpts = {
   headerStyle: { backgroundColor: colors.bg },
   headerShadowVisible: false,
   headerTintColor: colors.text,
-  headerTitleStyle: { fontWeight: '700' as const, fontSize: font.h3 },
+  headerTitleStyle: { fontFamily: fonts.headingX, fontSize: font.h3 },
   headerBackTitle: 'Geri',
   contentStyle: { backgroundColor: colors.bg },
 };
 
-function tabIcon(emoji: string) {
-  return ({ focused }: { focused: boolean }) => (
-    <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.45 }}>{emoji}</Text>
+function tabIcon(name: IconName) {
+  return ({ focused, color }: { focused: boolean; color: string }) => (
+    <Icon name={name} size={24} color={color} strokeWidth={focused ? 2.4 : 2} />
   );
 }
 
@@ -90,13 +90,13 @@ function ParentRoot() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: 62, paddingBottom: 8, paddingTop: 6 },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: 64, paddingBottom: 8, paddingTop: 8 },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: fonts.semibold },
       }}
     >
-      <ParentTabs.Screen name="HomeTab" component={ParentHomeStack} options={{ title: 'Ana Sayfa', tabBarIcon: tabIcon('🏠') }} />
-      <ParentTabs.Screen name="NotifTab" component={ParentNotificationsScreen} options={{ title: 'Bildirimler', tabBarIcon: tabIcon('🔔'), tabBarBadge: unread || undefined }} />
-      <ParentTabs.Screen name="ProfileTab" component={ParentProfileScreen} options={{ title: 'Profil', tabBarIcon: tabIcon('👤') }} />
+      <ParentTabs.Screen name="HomeTab" component={ParentHomeStack} options={{ title: 'Ana Sayfa', tabBarIcon: tabIcon('home') }} />
+      <ParentTabs.Screen name="NotifTab" component={ParentNotificationsScreen} options={{ title: 'Bildirimler', tabBarIcon: tabIcon('bell'), tabBarBadge: unread || undefined }} />
+      <ParentTabs.Screen name="ProfileTab" component={ParentProfileScreen} options={{ title: 'Profil', tabBarIcon: tabIcon('user') }} />
     </ParentTabs.Navigator>
   );
 }
@@ -122,17 +122,17 @@ function ChildRoot() {
         headerStyle: { backgroundColor: colors.bgChild },
         headerShadowVisible: false,
         headerTintColor: colors.text,
-        headerTitleStyle: { fontWeight: '700' },
+        headerTitleStyle: { fontFamily: fonts.headingX },
         tabBarActiveTintColor: colors.purple,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: 62, paddingBottom: 8, paddingTop: 6 },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarInactiveTintColor: colors.textFaint,
+        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, height: 64, paddingBottom: 8, paddingTop: 8 },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: fonts.semibold },
       }}
     >
-      <ChildTabs.Screen name="WalletTab" component={ChildWalletStack} options={{ title: 'Cüzdanım', headerShown: false, tabBarIcon: tabIcon('💳'), tabBarBadge: unread || undefined }} />
-      <ChildTabs.Screen name="TasksTab" component={ChildTasksScreen} options={{ title: 'Görevlerim', tabBarIcon: tabIcon('📋') }} />
-      <ChildTabs.Screen name="SavingsTab" component={ChildSavingsScreen} options={{ title: 'Biriktir', tabBarIcon: tabIcon('🎯') }} />
-      <ChildTabs.Screen name="LearnTab" component={ChildLearnScreen} options={{ title: 'Öğren', tabBarIcon: tabIcon('💡') }} />
+      <ChildTabs.Screen name="WalletTab" component={ChildWalletStack} options={{ title: 'Cüzdanım', headerShown: false, tabBarIcon: tabIcon('wallet'), tabBarBadge: unread || undefined }} />
+      <ChildTabs.Screen name="TasksTab" component={ChildTasksScreen} options={{ title: 'Görevlerim', tabBarIcon: tabIcon('tasks') }} />
+      <ChildTabs.Screen name="SavingsTab" component={ChildSavingsScreen} options={{ title: 'Biriktir', tabBarIcon: tabIcon('target') }} />
+      <ChildTabs.Screen name="LearnTab" component={ChildLearnScreen} options={{ title: 'Öğren', tabBarIcon: tabIcon('lightbulb') }} />
     </ChildTabs.Navigator>
   );
 }

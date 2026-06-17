@@ -1,11 +1,12 @@
-// MiniKart Aile - paylaşılan UI bileşenleri
+// MiniKart Aile - paylaşılan UI bileşenleri (tasarım sistemi uyumlu)
 import React from 'react';
 import {
   View, Text, TextInput, Pressable, StyleSheet, ViewStyle, TextStyle,
-  ScrollView, KeyboardAvoidingView, Platform, Switch,
+  ScrollView, KeyboardAvoidingView, Platform, Switch, Image, ImageSourcePropType,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, radius, spacing, shadow, font } from '../theme/theme';
+import { colors, radius, spacing, shadow, font, fonts } from '../theme/theme';
+import { Icon, IconName, IconCircle } from './Icon';
 
 export function Screen({
   children, scroll = true, bg = colors.bg, padded = true,
@@ -43,22 +44,27 @@ export function Body({ children, style }: { children: React.ReactNode; style?: T
   return <Text style={[s.body, style]}>{children}</Text>;
 }
 
+// Para metni — daima Inter tabular (spec: tabular-nums)
+export function Money({ children, style }: { children: React.ReactNode; style?: TextStyle }) {
+  return <Text style={[s.money, style]}>{children}</Text>;
+}
+
 export function Card({ children, style, onPress }: { children: React.ReactNode; style?: ViewStyle; onPress?: () => void }) {
   const content = <View style={[s.card, style]}>{children}</View>;
-  if (onPress) return <Pressable onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}>{content}</Pressable>;
+  if (onPress) return <Pressable onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1, transform: [{ scale: pressed ? 0.99 : 1 }] })}>{content}</Pressable>;
   return content;
 }
 
 type BtnKind = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
 export function Btn({
-  title, onPress, kind = 'primary', disabled, style, small,
-}: { title: string; onPress: () => void; kind?: BtnKind; disabled?: boolean; style?: ViewStyle; small?: boolean }) {
+  title, onPress, kind = 'primary', disabled, style, small, icon,
+}: { title: string; onPress: () => void; kind?: BtnKind; disabled?: boolean; style?: ViewStyle; small?: boolean; icon?: IconName }) {
   const palette: Record<BtnKind, { bg: string; fg: string; border?: string }> = {
     primary: { bg: colors.primary, fg: colors.onPrimary },
     success: { bg: colors.green, fg: colors.onPrimary },
     danger: { bg: colors.red, fg: colors.onPrimary },
     secondary: { bg: colors.primarySoft, fg: colors.primaryDark },
-    ghost: { bg: 'transparent', fg: colors.primary, border: colors.border },
+    ghost: { bg: 'transparent', fg: colors.primary, border: colors.borderStrong },
   };
   const p = palette[kind];
   return (
@@ -67,12 +73,13 @@ export function Btn({
       disabled={disabled}
       style={({ pressed }) => [
         s.btn,
-        small && { paddingVertical: 10, paddingHorizontal: 16 },
-        { backgroundColor: p.bg, opacity: disabled ? 0.45 : pressed ? 0.9 : 1 },
+        small && { height: 42, paddingHorizontal: 16 },
+        { backgroundColor: p.bg, opacity: disabled ? 0.45 : 1, transform: [{ scale: pressed ? 0.97 : 1 }] },
         p.border ? { borderWidth: 1.5, borderColor: p.border } : null,
         style,
       ]}
     >
+      {icon ? <Icon name={icon} size={small ? 16 : 18} color={p.fg} /> : null}
       <Text style={[s.btnText, small && { fontSize: font.small }, { color: p.fg }]}>{title}</Text>
     </Pressable>
   );
@@ -89,7 +96,7 @@ export function Field({
     <View style={{ gap: 6 }}>
       {label ? <Text style={s.label}>{label}</Text> : null}
       <TextInput
-        style={[s.input, multiline && { height: 80, textAlignVertical: 'top' }]}
+        style={[s.input, multiline && { height: 84, textAlignVertical: 'top', paddingTop: 14 }]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -129,11 +136,11 @@ export function ProgressBar({ pct, color = colors.green, height = 12 }: { pct: n
 
 export function ToggleRow({
   label, sub, value, onValueChange, icon,
-}: { label: string; sub?: string; value: boolean; onValueChange: (v: boolean) => void; icon?: string }) {
+}: { label: string; sub?: string; value: boolean; onValueChange: (v: boolean) => void; icon?: IconName }) {
   return (
     <View style={s.toggleRow}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
-        {icon ? <Text style={{ fontSize: 20 }}>{icon}</Text> : null}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
+        {icon ? <IconCircle name={icon} /> : null}
         <View style={{ flex: 1 }}>
           <Text style={s.toggleLabel}>{label}</Text>
           {sub ? <Text style={s.toggleSub}>{sub}</Text> : null}
@@ -142,8 +149,9 @@ export function ToggleRow({
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{ true: colors.primary, false: colors.borderStrong }}
+        trackColor={{ true: colors.green, false: colors.borderStrong }}
         thumbColor={colors.surface}
+        ios_backgroundColor={colors.borderStrong}
       />
     </View>
   );
@@ -153,10 +161,14 @@ export function Divider() {
   return <View style={{ height: 1, backgroundColor: colors.border }} />;
 }
 
-export function Empty({ icon, title, sub }: { icon: string; title: string; sub?: string }) {
+export function Empty({ icon, image, title, sub }: { icon?: string; image?: ImageSourcePropType; title: string; sub?: string }) {
   return (
-    <View style={{ alignItems: 'center', padding: spacing.xl, gap: 6 }}>
-      <Text style={{ fontSize: 40 }}>{icon}</Text>
+    <View style={{ alignItems: 'center', padding: spacing.xl, gap: 8 }}>
+      {image ? (
+        <Image source={image} style={{ width: 180, height: 130, resizeMode: 'contain' }} />
+      ) : (
+        <Text style={{ fontSize: 44 }}>{icon}</Text>
+      )}
       <Text style={[s.h2, { textAlign: 'center' }]}>{title}</Text>
       {sub ? <Muted style={{ textAlign: 'center' }}>{sub}</Muted> : null}
     </View>
@@ -164,21 +176,22 @@ export function Empty({ icon, title, sub }: { icon: string; title: string; sub?:
 }
 
 const s = StyleSheet.create({
-  h1: { fontSize: font.h1, fontWeight: '800', color: colors.text, letterSpacing: -0.5 },
-  h2: { fontSize: font.h3, fontWeight: '700', color: colors.text },
-  muted: { fontSize: font.small, color: colors.textMuted },
-  body: { fontSize: font.body, color: colors.text },
-  card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.lg, gap: spacing.md, ...shadow.card },
-  btn: { paddingVertical: 15, paddingHorizontal: 20, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
-  btnText: { fontSize: font.body, fontWeight: '700' },
-  label: { fontSize: font.small, fontWeight: '600', color: colors.textMuted, marginLeft: 4 },
+  h1: { fontFamily: fonts.headingX, fontSize: font.h1, color: colors.textHeading, letterSpacing: -0.4 },
+  h2: { fontFamily: fonts.headingX, fontSize: 17, color: colors.text },
+  muted: { fontFamily: fonts.body, fontSize: font.small, color: colors.textMuted, lineHeight: 18 },
+  body: { fontFamily: fonts.body, fontSize: font.body, color: colors.text, lineHeight: 22 },
+  money: { fontFamily: fonts.bold, color: colors.text, fontVariant: ['tabular-nums'] },
+  card: { backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.lg, gap: spacing.md, ...shadow.card },
+  btn: { height: 52, paddingHorizontal: 20, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  btnText: { fontFamily: fonts.semibold, fontSize: font.body },
+  label: { fontFamily: fonts.semibold, fontSize: font.small, color: colors.textMuted, marginLeft: 4 },
   input: {
-    backgroundColor: colors.surface, borderRadius: radius.md, paddingHorizontal: 16, paddingVertical: 14,
-    fontSize: font.body, color: colors.text, borderWidth: 1.5, borderColor: colors.border,
+    backgroundColor: colors.surface, borderRadius: radius.sm, paddingHorizontal: 16, paddingVertical: 14,
+    fontSize: font.body, fontFamily: fonts.body, color: colors.text, borderWidth: 1.5, borderColor: colors.border, minHeight: 52,
   },
   pill: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill, alignSelf: 'flex-start' },
-  pillText: { fontSize: font.tiny, fontWeight: '700' },
+  pillText: { fontFamily: fonts.bold, fontSize: font.tiny },
   toggleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 },
-  toggleLabel: { fontSize: font.body, fontWeight: '600', color: colors.text },
-  toggleSub: { fontSize: font.tiny, color: colors.textMuted, marginTop: 2 },
+  toggleLabel: { fontFamily: fonts.semibold, fontSize: font.body, color: colors.text },
+  toggleSub: { fontFamily: fonts.body, fontSize: font.tiny, color: colors.textMuted, marginTop: 2 },
 });
