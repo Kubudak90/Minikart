@@ -3,8 +3,9 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, ProgressBar, Divider, Avatar, Pill } from '../../components/ui';
 import { CardVisual } from '../../components/CardVisual';
 import { TxRow } from '../../components/TxRow';
+import { Icon } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
-import { colors, spacing, radius, font } from '../../theme/theme';
+import { colors, spacing, radius, font, fonts } from '../../theme/theme';
 import { money } from '../../utils/format';
 
 export function ChildHomeScreen({ navigation }: any) {
@@ -25,13 +26,13 @@ export function ChildHomeScreen({ navigation }: any) {
         <Avatar emoji={child.avatar} size={48} color={child.color + '33'} />
         <View style={{ flex: 1 }}>
           <Muted>Merhaba 👋</Muted>
-          <Text style={{ fontSize: font.h2, fontWeight: '800', color: colors.text }}>{child.name}</Text>
+          <Text style={{ fontSize: font.h2, fontFamily: fonts.headingX, color: colors.text }}>{child.name}</Text>
         </View>
         <Pressable onPress={() => navigation.navigate('ChildNotifications')} style={s.bell}>
-          <Text style={{ fontSize: 20 }}>🔔</Text>
+          <Icon name="bell" size={20} color={colors.text} />
           {unread > 0 && <View style={s.badge}><Text style={s.badgeText}>{unread}</Text></View>}
         </Pressable>
-        <Pressable onPress={logout} style={s.bell}><Text style={{ fontSize: 18 }}>🚪</Text></Pressable>
+        <Pressable onPress={logout} style={s.bell}><Icon name="logout" size={18} color={colors.text} /></Pressable>
       </View>
 
       {/* Bakiye */}
@@ -45,8 +46,8 @@ export function ChildHomeScreen({ navigation }: any) {
 
       {/* Hızlı aksiyonlar */}
       <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-        <Btn title="🙋 Para İste" kind="secondary" style={{ flex: 1 }} onPress={() => navigation.navigate('RequestMoney')} />
-        <Btn title="📜 Hareketler" kind="ghost" style={{ flex: 1 }} onPress={() => navigation.navigate('ChildTransactions')} />
+        <Btn title="Para İste" icon="hand-coins" kind="secondary" style={{ flex: 1 }} onPress={() => navigation.navigate('RequestMoney')} />
+        <Btn title="Hareketler" icon="receipt" kind="ghost" style={{ flex: 1 }} onPress={() => navigation.navigate('ChildTransactions')} />
       </View>
 
       {/* Birikim hedefi */}

@@ -20,7 +20,7 @@ export function TasksScreen({ route, navigation }: any) {
 
   return (
     <Screen>
-      <Btn title="＋ Yeni görev oluştur" onPress={() => navigation.navigate('CreateTask', { childId })} />
+      <Btn title="Yeni görev oluştur" icon="plus" onPress={() => navigation.navigate('CreateTask', { childId })} />
       {tasks.length === 0 && <Empty icon="📋" title="Görev yok" sub="Çocuğun için ödüllü görev oluştur." />}
       {tasks.map((t) => {
         const m = STATUS_META[t.status];
@@ -39,7 +39,7 @@ export function TasksScreen({ route, navigation }: any) {
             </View>
             {t.status === 'submitted' && (
               <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-                <Btn title={`✓ Onayla (${money(t.rewardAmount)})`} small kind="success" style={{ flex: 1 }} onPress={() => approveTask(t.id)} />
+                <Btn title={`Onayla (${money(t.rewardAmount)})`} icon="check" small kind="success" style={{ flex: 1 }} onPress={() => approveTask(t.id)} />
                 <Btn title="Reddet" small kind="ghost" onPress={() => rejectTask(t.id)} />
               </View>
             )}

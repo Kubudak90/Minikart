@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, ProgressBar, Empty, Pill, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
+import { useCelebrate } from '../../components/Celebrate';
 import { colors, spacing, radius, font } from '../../theme/theme';
 import { money } from '../../utils/format';
 
 export function ChildSavingsScreen() {
   const { currentChild, childGoals, childWallet, contributeGoal } = useApp();
+  const celebrate = useCelebrate();
   const child = currentChild();
   const goals = child ? childGoals(child.id) : [];
   const wallet = child ? childWallet(child.id) : null;
@@ -17,8 +19,14 @@ export function ChildSavingsScreen() {
   const add = (goalId: string) => {
     const a = parseFloat(amount) || 0;
     if (a <= 0) return;
-    if (contributeGoal(goalId, a)) { setActive(null); setAmount(''); setErr(''); }
-    else setErr('Yeterli paran yok.');
+    const goal = goals.find((g) => g.id === goalId);
+    const willComplete = goal ? goal.currentAmount + a >= goal.targetAmount : false;
+    if (contributeGoal(goalId, a)) {
+      setActive(null); setAmount(''); setErr('');
+      if (willComplete) {
+        celebrate({ title: 'Hedefini tamamladın! 🎉', sub: `${goal?.title} hedefine ulaştın. Harikasın!`, image: require('../../../assets/illustrations/celebration.png') });
+      }
+    } else setErr('Yeterli paran yok.');
   };
 
   return (
@@ -56,7 +64,7 @@ export function ChildSavingsScreen() {
                   </View>
                 </View>
               ) : (
-                <Btn title="💰 Bu hedefe biriktir" small kind="secondary" onPress={() => { setActive(g.id); setAmount(''); }} />
+                <Btn title="Bu hedefe biriktir" icon="piggy-bank" small kind="secondary" onPress={() => { setActive(g.id); setAmount(''); }} />
               )
             )}
           </Card>

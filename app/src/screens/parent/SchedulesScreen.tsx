@@ -42,7 +42,7 @@ export function SchedulesScreen({ route }: any) {
           <Muted>{FREQ.find((f) => f.key === sch.frequency)?.label}{sch.capBalanceUnder ? ` • Bakiye ${money(sch.capBalanceUnder)} üstündeyse gönderme` : ''}</Muted>
           {sch.lastRunAt ? <Muted>Son gönderim: {shortDate(sch.lastRunAt)}</Muted> : null}
           <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-            <Btn title="▶︎ Şimdi çalıştır" small kind="success" style={{ flex: 1 }} onPress={() => { if (!runScheduleNow(sch.id)) setMsg('Çalıştırılamadı (bakiye/koşul). Aile bakiyesini kontrol et.'); else setMsg('Harçlık gönderildi.'); }} />
+            <Btn title="Şimdi çalıştır" icon="send" small kind="success" style={{ flex: 1 }} onPress={() => { if (!runScheduleNow(sch.id)) setMsg('Çalıştırılamadı (bakiye/koşul). Aile bakiyesini kontrol et.'); else setMsg('Harçlık gönderildi.'); }} />
             <Btn title={sch.active ? 'Duraklat' : 'Sürdür'} small kind="ghost" style={{ flex: 1 }} onPress={() => toggleSchedule(sch.id)} />
             <Btn title="Sil" small kind="ghost" onPress={() => deleteSchedule(sch.id)} />
           </View>

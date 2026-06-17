@@ -9,6 +9,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { NunitoSans_700Bold, NunitoSans_800ExtraBold } from '@expo-google-fonts/nunito-sans';
 import { AppProvider, useApp } from './src/store/AppContext';
+import { CelebrationProvider } from './src/components/Celebrate';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { colors } from './src/theme/theme';
 
@@ -41,8 +42,10 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <AppProvider>
-        <StatusBar style="dark" />
-        <Gate />
+        <CelebrationProvider>
+          <StatusBar style="dark" />
+          <Gate />
+        </CelebrationProvider>
       </AppProvider>
     </SafeAreaProvider>
   );

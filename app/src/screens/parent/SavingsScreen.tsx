@@ -12,7 +12,7 @@ export function SavingsScreen({ route, navigation }: any) {
 
   return (
     <Screen>
-      <Btn title="＋ Yeni hedef oluştur" onPress={() => navigation.navigate('CreateSavings', { childId })} />
+      <Btn title="Yeni hedef oluştur" icon="plus" onPress={() => navigation.navigate('CreateSavings', { childId })} />
       {goals.length === 0 && <Empty image={require('../../../assets/illustrations/piggy-saving.png')} title="Hedef yok" sub="Çocuğun için bir birikim hedefi oluştur." />}
       {goals.map((g) => {
         const pct = Math.round((g.currentAmount / g.targetAmount) * 100);

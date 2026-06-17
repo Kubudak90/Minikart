@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Card as TCard } from '../store/types';
 import { colors, radius, spacing, shadow, fonts } from '../theme/theme';
@@ -14,14 +14,16 @@ export function CardVisual({ card, name, color = colors.primary, allowReveal = t
   const [revealed, setRevealed] = useState(false);
   const frozen = card.status === 'frozen';
   const grad = cardGradient(color);
+  const icy = useRef(new Animated.Value(frozen ? 1 : 0)).current;
+  useEffect(() => {
+    Animated.timing(icy, { toValue: frozen ? 1 : 0, duration: 300, useNativeDriver: true }).start();
+  }, [frozen, icy]);
   return (
     <LinearGradient colors={grad} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[s.card, shadow.purple]}>
-      {frozen && (
-        <View style={s.frozen}>
-          <Icon name="snowflake" size={26} color="#fff" />
-          <Text style={s.frozenText}>Donduruldu</Text>
-        </View>
-      )}
+      <Animated.View pointerEvents="none" style={[s.frozen, { opacity: icy }]}>
+        <Icon name="snowflake" size={26} color="#fff" />
+        <Text style={s.frozenText}>Donduruldu</Text>
+      </Animated.View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
           <Icon name="wallet" size={20} color="#fff" />

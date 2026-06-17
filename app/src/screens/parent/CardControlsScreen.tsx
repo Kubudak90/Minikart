@@ -42,10 +42,10 @@ export function CardControlsScreen({ route, navigation }: any) {
         <ToggleRow icon="🌙" label="Gece harcaması engeli" sub="22:00 - 06:00 arası harcamayı engelle" value={c.nightBlock} onValueChange={(v) => updateCardControls(card.id, { nightBlock: v })} />
       </Card>
 
-      <Btn title="📊 Limitleri düzenle" kind="secondary" onPress={() => navigation.navigate('Limits', { childId })} />
-      <Btn title="🏷️ Kategori kontrolü" kind="secondary" onPress={() => navigation.navigate('Categories', { childId })} />
+      <Btn title="Limitleri düzenle" icon="sliders" kind="secondary" onPress={() => navigation.navigate('Limits', { childId })} />
+      <Btn title="Kategori kontrolü" icon="tag" kind="secondary" onPress={() => navigation.navigate('Categories', { childId })} />
       {card.type === 'virtual' && !card.physicalRequested && (
-        <Btn title="📮 Fiziksel kart iste" kind="ghost" onPress={() => requestPhysicalCard(childId)} />
+        <Btn title="Fiziksel kart iste" icon="send" kind="ghost" onPress={() => requestPhysicalCard(childId)} />
       )}
     </Screen>
   );

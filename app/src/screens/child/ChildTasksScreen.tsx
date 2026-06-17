@@ -2,12 +2,18 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Pill, Empty } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
+import { useCelebrate } from '../../components/Celebrate';
 import { colors, spacing, font } from '../../theme/theme';
 import { money } from '../../utils/format';
 
 export function ChildTasksScreen() {
   const { currentChild, childTasks, submitTask } = useApp();
+  const celebrate = useCelebrate();
   const child = currentChild();
+  const onComplete = (id: string, title: string) => {
+    submitTask(id);
+    celebrate({ title: 'Harika! 🎉', sub: `"${title}" görevini tamamladın. Ailen onaylayınca ödülün gelecek.`, image: require('../../../assets/illustrations/task-reward.png') });
+  };
   const tasks = child ? childTasks(child.id) : [];
   const open = tasks.filter((t) => t.status === 'open');
   const waiting = tasks.filter((t) => t.status === 'submitted');
@@ -31,7 +37,7 @@ export function ChildTasksScreen() {
             </View>
             <Pill text={`+${money(t.rewardAmount)}`} color={colors.green} bg={colors.greenSoft} />
           </View>
-          <Btn title="✓ Tamamladım" small kind="success" onPress={() => submitTask(t.id)} />
+          <Btn title="Tamamladım" icon="check" small kind="success" onPress={() => onComplete(t.id, t.title)} />
         </Card>
       ))}
 
