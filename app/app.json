@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "MiniKart Aile",
+    "slug": "minikart-aile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "minikart",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#FBF7F0"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.minikart.aile"
+    },
+    "android": {
+      "package": "com.minikart.aile",
+      "adaptiveIcon": {
+        "backgroundColor": "#E7EFFE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    }
+  }
+}
