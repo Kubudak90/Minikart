@@ -1,5 +1,7 @@
 // MiniKart Aile - Veri modeli (Spec §15)
 // MVP için sadeleştirilmiş; gerçek üründe lisanslı e-para/kart partneri verisi.
+// ÖNEMLİ: Tüm para alanları tamsayı KURUŞ'tur (ör. 18550 = 185,50 TL). Görüntü/giriş
+// sınırında utils/format'taki money() / tlToKurus() / kurusToTl() ile çevrilir.
 
 export type KycStatus = 'pending' | 'verified' | 'rejected';
 
@@ -31,7 +33,7 @@ export interface Child {
   username: string;
   avatar: string; // emoji
   color: string;
-  pin: string; // 4 haneli (MVP demo; gerçek üründe hashlenir)
+  pin: string; // hashlenmiş PIN (bkz. utils/security; düz metin saklanmaz)
   relation: Relation;
   status: 'active' | 'suspended';
   createdAt: string;
@@ -43,7 +45,7 @@ export interface Wallet {
   id: string;
   ownerType: WalletOwner;
   ownerId: string; // familyId veya childId
-  balance: number; // kuruş değil, TL (MVP)
+  balance: number; // tamsayı kuruş
   currency: 'TRY';
   status: 'active' | 'frozen';
 }
@@ -83,8 +85,8 @@ export interface Card {
   brand: string;
   expMonth: number;
   expYear: number;
-  number: string; // demo amaçlı tam numara (gerçek üründe asla saklanmaz)
-  cvv: string;
+  // Güvenlik: tam PAN/CVV ASLA saklanmaz. Gerçek üründe PCI-uyumlu kasadan anlık
+  // (tokenize) çekilir; burada yalnızca son 4 hane tutulur.
   controls: CardControls;
   limits: CardLimits;
   blockedCategories: Category[];

@@ -1,6 +1,8 @@
 // Demo veri tohumu — uygulama ilk açılışta dolu görünsün diye.
+// Tüm para değerleri tamsayı KURUŞ'tur (ör. 245000 = 2.450,00 TL).
 import { AppState } from './types';
 import { uid } from '../utils/format';
+import { hashPin } from '../utils/security';
 
 function isoDaysAgo(days: number, hour = 12): string {
   const d = new Date();
@@ -46,7 +48,7 @@ export function buildSeed(): AppState {
         username: 'elif',
         avatar: '🦊',
         color: '#7C5CFC',
-        pin: '1234',
+        pin: hashPin('1234'), // demo PIN 1234, hashlenmiş saklanır
         relation: 'kizim',
         status: 'active',
         createdAt: isoDaysAgo(38),
@@ -60,16 +62,16 @@ export function buildSeed(): AppState {
         username: 'kerem',
         avatar: '🐯',
         color: '#2BB673',
-        pin: '1234',
+        pin: hashPin('1234'), // demo PIN 1234, hashlenmiş saklanır
         relation: 'oglum',
         status: 'active',
         createdAt: isoDaysAgo(30),
       },
     ],
     wallets: [
-      { id: famWalletId, ownerType: 'family', ownerId: familyId, balance: 2450, currency: 'TRY', status: 'active' },
-      { id: elifWalletId, ownerType: 'child', ownerId: elifId, balance: 185.5, currency: 'TRY', status: 'active' },
-      { id: keremWalletId, ownerType: 'child', ownerId: keremId, balance: 312, currency: 'TRY', status: 'active' },
+      { id: famWalletId, ownerType: 'family', ownerId: familyId, balance: 245000, currency: 'TRY', status: 'active' },
+      { id: elifWalletId, ownerType: 'child', ownerId: elifId, balance: 18550, currency: 'TRY', status: 'active' },
+      { id: keremWalletId, ownerType: 'child', ownerId: keremId, balance: 31200, currency: 'TRY', status: 'active' },
     ],
     cards: [
       {
@@ -81,10 +83,8 @@ export function buildSeed(): AppState {
         brand: 'MiniKart',
         expMonth: 9,
         expYear: 2029,
-        number: '5312 9043 1122 4821',
-        cvv: '204',
         controls: { online: true, atm: false, contactless: true, abroad: false, nightBlock: true },
-        limits: { daily: 100, weekly: 350, perTransaction: 75 },
+        limits: { daily: 10000, weekly: 35000, perTransaction: 7500 },
         blockedCategories: ['oyun'],
         createdAt: isoDaysAgo(38),
       },
@@ -97,41 +97,39 @@ export function buildSeed(): AppState {
         brand: 'MiniKart',
         expMonth: 3,
         expYear: 2030,
-        number: '5312 9088 5510 7390',
-        cvv: '617',
         controls: { online: true, atm: true, contactless: true, abroad: false, nightBlock: false },
-        limits: { daily: 150, weekly: 500, perTransaction: 120 },
+        limits: { daily: 15000, weekly: 50000, perTransaction: 12000 },
         blockedCategories: [],
         physicalRequested: true,
         createdAt: isoDaysAgo(28),
       },
     ],
     transactions: [
-      { id: uid('tx_'), walletId: famWalletId, amount: 3000, type: 'topup', status: 'approved', description: 'Bakiye yükleme', createdAt: isoDaysAgo(20) },
-      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, amount: 150, type: 'allowance', status: 'approved', description: 'Haftalık harçlık', createdAt: isoDaysAgo(7) },
-      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -32, type: 'spend', merchantName: 'Okul Kantini', category: 'yemek', mcc: '5814', status: 'approved', description: 'Okul Kantini', createdAt: isoDaysAgo(6, 11) },
-      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -18.5, type: 'spend', merchantName: 'Kırtasiye Mavi', category: 'kirtasiye', mcc: '5943', status: 'approved', description: 'Kırtasiye Mavi', createdAt: isoDaysAgo(4, 15) },
-      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -120, type: 'spend', merchantName: 'Oyun Marketi', category: 'oyun', mcc: '5816', status: 'declined', declineReason: 'Bu kategori kapalı ve tutar tek işlem limitinin üstünde.', description: 'Oyun Marketi', createdAt: isoDaysAgo(3, 21) },
-      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, amount: 50, type: 'reward', status: 'approved', description: 'Görev ödülü: Kitap oku', createdAt: isoDaysAgo(2) },
-      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, amount: 150, type: 'allowance', status: 'approved', description: 'Haftalık harçlık', createdAt: isoDaysAgo(7) },
-      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, cardId: keremCardId, amount: -45, type: 'spend', merchantName: 'Migros', category: 'market', mcc: '5411', status: 'approved', description: 'Migros', createdAt: isoDaysAgo(5, 17) },
-      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, cardId: keremCardId, amount: -25, type: 'spend', merchantName: 'İETT Ulaşım', category: 'ulasim', mcc: '4111', status: 'approved', description: 'İETT Ulaşım', createdAt: isoDaysAgo(2, 8) },
-      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, amount: -30, type: 'goal_contribution', status: 'approved', description: 'Bisiklet hedefine aktarım', createdAt: isoDaysAgo(2) },
+      { id: uid('tx_'), walletId: famWalletId, amount: 300000, type: 'topup', status: 'approved', description: 'Bakiye yükleme', createdAt: isoDaysAgo(20) },
+      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, amount: 15000, type: 'allowance', status: 'approved', description: 'Haftalık harçlık', createdAt: isoDaysAgo(7) },
+      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -3200, type: 'spend', merchantName: 'Okul Kantini', category: 'yemek', mcc: '5814', status: 'approved', description: 'Okul Kantini', createdAt: isoDaysAgo(6, 11) },
+      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -1850, type: 'spend', merchantName: 'Kırtasiye Mavi', category: 'kirtasiye', mcc: '5943', status: 'approved', description: 'Kırtasiye Mavi', createdAt: isoDaysAgo(4, 15) },
+      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, cardId: elifCardId, amount: -12000, type: 'spend', merchantName: 'Oyun Marketi', category: 'oyun', mcc: '5816', status: 'declined', declineReason: 'Bu kategori kapalı ve tutar tek işlem limitinin üstünde.', description: 'Oyun Marketi', createdAt: isoDaysAgo(3, 21) },
+      { id: uid('tx_'), walletId: elifWalletId, childId: elifId, amount: 5000, type: 'reward', status: 'approved', description: 'Görev ödülü: Kitap oku', createdAt: isoDaysAgo(2) },
+      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, amount: 15000, type: 'allowance', status: 'approved', description: 'Haftalık harçlık', createdAt: isoDaysAgo(7) },
+      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, cardId: keremCardId, amount: -4500, type: 'spend', merchantName: 'Migros', category: 'market', mcc: '5411', status: 'approved', description: 'Migros', createdAt: isoDaysAgo(5, 17) },
+      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, cardId: keremCardId, amount: -2500, type: 'spend', merchantName: 'İETT Ulaşım', category: 'ulasim', mcc: '4111', status: 'approved', description: 'İETT Ulaşım', createdAt: isoDaysAgo(2, 8) },
+      { id: uid('tx_'), walletId: keremWalletId, childId: keremId, amount: -3000, type: 'goal_contribution', status: 'approved', description: 'Bisiklet hedefine aktarım', createdAt: isoDaysAgo(2) },
     ],
     allowanceSchedules: [
-      { id: uid('al_'), childId: elifId, amount: 150, frequency: 'weekly', dayOfWeek: 1, startDate: isoDaysAgo(35), active: true, capBalanceUnder: 500, lastRunAt: isoDaysAgo(7) },
+      { id: uid('al_'), childId: elifId, amount: 15000, frequency: 'weekly', dayOfWeek: 1, startDate: isoDaysAgo(35), active: true, capBalanceUnder: 50000, lastRunAt: isoDaysAgo(7) },
     ],
     tasks: [
-      { id: uid('tsk_'), childId: elifId, createdByParentId: parentId, title: 'Odanı topla', description: 'Hafta sonu odanı düzenle', rewardAmount: 30, recurrence: 'repeating', proofRequired: false, status: 'open', createdAt: isoDaysAgo(2) },
-      { id: uid('tsk_'), childId: elifId, createdByParentId: parentId, title: 'Kitap oku (50 sayfa)', description: 'Bu hafta 50 sayfa kitap oku', rewardAmount: 50, recurrence: 'once', proofRequired: true, status: 'submitted', createdAt: isoDaysAgo(3) },
-      { id: uid('tsk_'), childId: keremId, createdByParentId: parentId, title: 'Matematik ödevi', description: 'Ödevi bitir ve göster', rewardAmount: 40, recurrence: 'once', proofRequired: true, status: 'open', createdAt: isoDaysAgo(1) },
+      { id: uid('tsk_'), childId: elifId, createdByParentId: parentId, title: 'Odanı topla', description: 'Hafta sonu odanı düzenle', rewardAmount: 3000, recurrence: 'repeating', proofRequired: false, status: 'open', createdAt: isoDaysAgo(2) },
+      { id: uid('tsk_'), childId: elifId, createdByParentId: parentId, title: 'Kitap oku (50 sayfa)', description: 'Bu hafta 50 sayfa kitap oku', rewardAmount: 5000, recurrence: 'once', proofRequired: true, status: 'submitted', createdAt: isoDaysAgo(3) },
+      { id: uid('tsk_'), childId: keremId, createdByParentId: parentId, title: 'Matematik ödevi', description: 'Ödevi bitir ve göster', rewardAmount: 4000, recurrence: 'once', proofRequired: true, status: 'open', createdAt: isoDaysAgo(1) },
     ],
     savingsGoals: [
-      { id: uid('sg_'), childId: elifId, title: 'Boya seti', targetAmount: 400, currentAmount: 160, icon: '🎨', autoContributionPct: 20, familyContribOpen: true, status: 'active', createdAt: isoDaysAgo(15) },
-      { id: uid('sg_'), childId: keremId, title: 'Bisiklet', targetAmount: 3000, currentAmount: 780, icon: '🚲', autoContributionPct: 25, familyContribOpen: true, status: 'active', createdAt: isoDaysAgo(20) },
+      { id: uid('sg_'), childId: elifId, title: 'Boya seti', targetAmount: 40000, currentAmount: 16000, icon: '🎨', autoContributionPct: 20, familyContribOpen: true, status: 'active', createdAt: isoDaysAgo(15) },
+      { id: uid('sg_'), childId: keremId, title: 'Bisiklet', targetAmount: 300000, currentAmount: 78000, icon: '🚲', autoContributionPct: 25, familyContribOpen: true, status: 'active', createdAt: isoDaysAgo(20) },
     ],
     moneyRequests: [
-      { id: uid('mr_'), childId: keremId, amount: 60, reason: 'Arkadaşımın doğum günü hediyesi', status: 'pending', createdAt: isoDaysAgo(0, 9) },
+      { id: uid('mr_'), childId: keremId, amount: 6000, reason: 'Arkadaşımın doğum günü hediyesi', status: 'pending', createdAt: isoDaysAgo(0, 9) },
     ],
     notifications: [
       { id: uid('n_'), scope: 'parent', type: 'request', title: 'Kerem para istedi', body: 'Kerem 60₺ istedi: Arkadaşımın doğum günü hediyesi', read: false, createdAt: isoDaysAgo(0, 9) },

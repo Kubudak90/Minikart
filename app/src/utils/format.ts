@@ -8,20 +8,26 @@ export function uid(prefix = ''): string {
   );
 }
 
-// ₺1.250,50 biçimi (Intl'e güvenmeden, Hermes uyumlu)
-export function money(amount: number): string {
-  const neg = amount < 0;
-  const abs = Math.abs(amount);
-  const fixed = abs.toFixed(2); // "1250.50"
-  const [intPart, decPart] = fixed.split('.');
+// Para tamsayı KURUŞ olarak tutulur. Bu yardımcılar görüntü/giriş sınırında çevirir.
+export const tlToKurus = (tl: number): number => Math.round(tl * 100);
+export const kurusToTl = (kurus: number): number => kurus / 100;
+
+// ₺1.250,50 biçimi (Intl'e güvenmeden, Hermes uyumlu). Girdi: kuruş (tamsayı).
+export function money(kurus: number): string {
+  const k = Math.round(kurus);
+  const neg = k < 0;
+  const abs = Math.abs(k);
+  const intPart = Math.floor(abs / 100).toString();
+  const decPart = (abs % 100).toString().padStart(2, '0');
   const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   return `${neg ? '-' : ''}₺${withThousands},${decPart}`;
 }
 
-export function moneyShort(amount: number): string {
-  const abs = Math.abs(amount);
-  const intPart = Math.round(abs).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  return `${amount < 0 ? '-' : ''}₺${intPart}`;
+// Kuruşu en yakın TL'ye yuvarlayıp kısa gösterir (₺1.251).
+export function moneyShort(kurus: number): string {
+  const tl = Math.round(Math.abs(kurus) / 100);
+  const intPart = tl.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return `${kurus < 0 ? '-' : ''}₺${intPart}`;
 }
 
 const MONTHS = [
