@@ -7,8 +7,9 @@ import { Icon, IconName } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font, fonts, shadow } from '../../theme/theme';
 import { money, age } from '../../utils/format';
+import { ParentScreenProps, ChildIdRoute } from '../../navigation/types';
 
-const ACTIONS: { icon: IconName; label: string; route: string; tint?: string; bg?: string }[] = [
+const ACTIONS: { icon: IconName; label: string; route: ChildIdRoute; tint?: string; bg?: string }[] = [
   { icon: 'hand-coins', label: 'Harçlık Gönder', route: 'SendAllowance', tint: colors.green, bg: colors.greenSoft },
   { icon: 'repeat', label: 'Otomatik Harçlık', route: 'Schedules' },
   { icon: 'sliders', label: 'Limitler', route: 'Limits' },
@@ -19,7 +20,7 @@ const ACTIONS: { icon: IconName; label: string; route: string; tint?: string; bg
   { icon: 'flask', label: 'Harcama Testi', route: 'SimulateSpend' },
 ];
 
-export function ChildDetailScreen({ route, navigation }: any) {
+export function ChildDetailScreen({ route, navigation }: ParentScreenProps<'ChildDetail'>) {
   const { childId } = route.params;
   const { state, childWallet, childCard, childTransactions, createVirtualCard, requestPhysicalCard, setCardFrozen } = useApp();
   const child = state.children.find((c) => c.id === childId);

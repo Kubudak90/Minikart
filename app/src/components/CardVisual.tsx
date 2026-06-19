@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Card as TCard } from '../store/types';
 import { colors, radius, spacing, shadow, fonts } from '../theme/theme';
@@ -7,11 +7,11 @@ import { cardGradient } from '../theme/theme';
 import { Icon } from './Icon';
 
 // Çocuk/ebeveyn ekranında gösterilen kart görseli (mor gradyan, çocuk temalı).
-// Tam numara varsayılan gizli; göster/gizle ile açılır (Spec §18 güvenlik).
-export function CardVisual({ card, name, color = colors.primary, allowReveal = true }: {
-  card: TCard; name: string; color?: string; allowReveal?: boolean;
+// Güvenlik: tam PAN/CVV saklanmadığından yalnızca maskeli numara gösterilir
+// (gerçek üründe tam numara güvenli kasadan anlık çekilir).
+export function CardVisual({ card, name, color = colors.primary }: {
+  card: TCard; name: string; color?: string;
 }) {
-  const [revealed, setRevealed] = useState(false);
   const frozen = card.status === 'frozen';
   const grad = cardGradient(color);
   const icy = useRef(new Animated.Value(frozen ? 1 : 0)).current;
@@ -31,9 +31,7 @@ export function CardVisual({ card, name, color = colors.primary, allowReveal = t
         </View>
         <Text style={s.type}>{card.type === 'virtual' ? 'Sanal' : 'Fiziksel'}</Text>
       </View>
-      <Text style={s.number}>
-        {revealed ? card.number : `•••• •••• •••• ${card.last4}`}
-      </Text>
+      <Text style={s.number}>{`•••• •••• •••• ${card.last4}`}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <View>
           <Text style={s.miniLabel}>KART SAHİBİ</Text>
@@ -43,19 +41,7 @@ export function CardVisual({ card, name, color = colors.primary, allowReveal = t
           <Text style={s.miniLabel}>SKT</Text>
           <Text style={s.value}>{String(card.expMonth).padStart(2, '0')}/{String(card.expYear).slice(2)}</Text>
         </View>
-        {revealed && (
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text style={s.miniLabel}>CVV</Text>
-            <Text style={s.value}>{card.cvv}</Text>
-          </View>
-        )}
       </View>
-      {allowReveal && (
-        <Pressable onPress={() => setRevealed((r) => !r)} style={s.reveal}>
-          <Icon name={revealed ? 'eye-off' : 'eye'} size={15} color="#fff" />
-          <Text style={s.revealText}>{revealed ? 'Bilgileri gizle' : 'Kart bilgilerini göster'}</Text>
-        </Pressable>
-      )}
     </LinearGradient>
   );
 }

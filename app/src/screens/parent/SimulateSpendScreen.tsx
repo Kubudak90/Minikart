@@ -3,13 +3,14 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { Category } from '../../store/types';
-import { CATEGORY_META, money } from '../../utils/format';
+import { CATEGORY_META, money, tlToKurus } from '../../utils/format';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { ParentScreenProps } from '../../navigation/types';
 
 const CATS: Category[] = ['market', 'kirtasiye', 'ulasim', 'yemek', 'giyim', 'oyun', 'online', 'eglence', 'atm'];
 
 // Spec §16 Webhooks: provider/transaction simülasyonu — limit motorunu test eder.
-export function SimulateSpendScreen({ route }: any) {
+export function SimulateSpendScreen({ route }: ParentScreenProps<'SimulateSpend'>) {
   const { childId } = route.params;
   const { childCard, childWallet, simulateSpend } = useApp();
   const card = childCard(childId);
@@ -22,7 +23,7 @@ export function SimulateSpendScreen({ route }: any) {
   const run = () => {
     const a = parseFloat(amount) || 0;
     if (a <= 0 || !merchant.trim()) return;
-    setResult(simulateSpend(childId, merchant.trim(), a, cat));
+    setResult(simulateSpend(childId, merchant.trim(), tlToKurus(a), cat));
   };
 
   return (

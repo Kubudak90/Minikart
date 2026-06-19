@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useApp } from '../store/AppContext';
 import { colors, font, fonts } from '../theme/theme';
 import { Icon, IconName } from '../components/Icon';
-import { ParentStackParamList, ChildStackParamList } from './types';
+import { ParentStackParamList, ChildStackParamList, AuthStackParamList, ChildTabParamList } from './types';
 
 // Auth
 import { WelcomeScreen } from '../screens/auth/WelcomeScreen';
@@ -39,11 +39,11 @@ import { ChildSavingsScreen } from '../screens/child/ChildSavingsScreen';
 import { ChildTasksScreen } from '../screens/child/ChildTasksScreen';
 import { ChildLearnScreen } from '../screens/child/ChildLearnScreen';
 
-const AuthStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const ParentStack = createNativeStackNavigator<ParentStackParamList>();
 const ChildStack = createNativeStackNavigator<ChildStackParamList>();
 const ParentTabs = createBottomTabNavigator();
-const ChildTabs = createBottomTabNavigator();
+const ChildTabs = createBottomTabNavigator<ChildTabParamList>();
 
 const headerOpts = {
   headerStyle: { backgroundColor: colors.bg },

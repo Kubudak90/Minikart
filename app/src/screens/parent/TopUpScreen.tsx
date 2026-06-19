@@ -3,15 +3,17 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
-import { money } from '../../utils/format';
+import { money, tlToKurus } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
-const QUICK = [100, 250, 500, 1000];
+const QUICK = [100, 250, 500, 1000]; // TL ön ayarları
 
-export function TopUpScreen({ navigation }: any) {
+export function TopUpScreen({ navigation }: ParentScreenProps<'TopUp'>) {
   const { familyWallet, topUp } = useApp();
   const [amount, setAmount] = useState('');
   const fam = familyWallet();
-  const val = parseFloat(amount.replace(',', '.')) || 0;
+  const val = parseFloat(amount.replace(',', '.')) || 0; // TL
+  const kurus = tlToKurus(val);
 
   return (
     <Screen>
@@ -33,9 +35,9 @@ export function TopUpScreen({ navigation }: any) {
       <Muted>Demo: gerçek ödeme alınmaz. Gerçek üründe banka/kart ile lisanslı e-para sağlayıcısı üzerinden yüklenir.</Muted>
 
       <Btn
-        title={val > 0 ? `${money(val)} Yükle` : 'Tutar gir'}
+        title={val > 0 ? `${money(kurus)} Yükle` : 'Tutar gir'}
         disabled={val <= 0}
-        onPress={() => { topUp(val); navigation.goBack(); }}
+        onPress={() => { topUp(kurus); navigation.goBack(); }}
       />
     </Screen>
   );

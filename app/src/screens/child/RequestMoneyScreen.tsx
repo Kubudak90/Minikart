@@ -3,11 +3,13 @@ import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { ChildScreenProps } from '../../navigation/types';
+import { tlToKurus } from '../../utils/format';
 
-const QUICK = [20, 50, 100, 150];
+const QUICK = [20, 50, 100, 150]; // TL ön ayarları
 
 // Spec §18: çocuk para gönderemez, sadece isteyebilir.
-export function RequestMoneyScreen({ navigation }: any) {
+export function RequestMoneyScreen({ navigation }: ChildScreenProps<'RequestMoney'>) {
   const { currentChild, requestMoney } = useApp();
   const child = currentChild()!;
   const [amount, setAmount] = useState('');
@@ -52,7 +54,7 @@ export function RequestMoneyScreen({ navigation }: any) {
         title="İsteği gönder"
         kind="primary"
         disabled={val <= 0 || !reason.trim()}
-        onPress={() => { requestMoney(child.id, val, reason.trim()); setSent(true); }}
+        onPress={() => { requestMoney(child.id, tlToKurus(val), reason.trim()); setSent(true); }}
       />
     </Screen>
   );

@@ -3,11 +3,13 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { ParentScreenProps } from '../../navigation/types';
+import { tlToKurus } from '../../utils/format';
 
 const ICONS = ['🚲', '🎨', '🎮', '📚', '⚽️', '🎧', '👟', '🪀', '🧩', '🎸'];
 const PCTS = [0, 10, 20, 30, 50];
 
-export function CreateSavingsScreen({ route, navigation }: any) {
+export function CreateSavingsScreen({ route, navigation }: ParentScreenProps<'CreateSavings'>) {
   const { childId } = route.params;
   const { createGoal } = useApp();
   const [title, setTitle] = useState('');
@@ -40,7 +42,7 @@ export function CreateSavingsScreen({ route, navigation }: any) {
           </Pressable>
         ))}
       </View>
-      <Btn title="Hedefi oluştur" disabled={!valid} onPress={() => { createGoal(childId, title.trim(), parseFloat(target), icon, pct); navigation.goBack(); }} />
+      <Btn title="Hedefi oluştur" disabled={!valid} onPress={() => { createGoal(childId, title.trim(), tlToKurus(parseFloat(target)), icon, pct); navigation.goBack(); }} />
     </Screen>
   );
 }

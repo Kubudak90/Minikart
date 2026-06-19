@@ -4,8 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icon, IconName } from '../../components/Icon';
 import { colors, spacing, radius, font, fonts } from '../../theme/theme';
+import { AuthScreenProps } from '../../navigation/types';
 
-export function WelcomeScreen({ navigation }: any) {
+export function WelcomeScreen({ navigation }: AuthScreenProps<'Welcome'>) {
   return (
     <LinearGradient colors={['#8E78FF', '#5A40DB']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>

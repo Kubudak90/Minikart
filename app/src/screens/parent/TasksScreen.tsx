@@ -5,6 +5,7 @@ import { useApp } from '../../store/AppContext';
 import { Task } from '../../store/types';
 import { colors, spacing, font } from '../../theme/theme';
 import { money } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
 const STATUS_META: Record<Task['status'], { label: string; color: string; bg: string }> = {
   open: { label: 'Açık', color: colors.primary, bg: colors.primarySoft },
@@ -13,7 +14,7 @@ const STATUS_META: Record<Task['status'], { label: string; color: string; bg: st
   rejected: { label: 'Reddedildi', color: colors.red, bg: colors.redSoft },
 };
 
-export function TasksScreen({ route, navigation }: any) {
+export function TasksScreen({ route, navigation }: ParentScreenProps<'Tasks'>) {
   const { childId } = route.params;
   const { childTasks, approveTask, rejectTask } = useApp();
   const tasks = childTasks(childId);

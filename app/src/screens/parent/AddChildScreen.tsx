@@ -4,6 +4,8 @@ import { Screen, H2, Muted, Card, Btn, Field, ToggleRow } from '../../components
 import { useApp } from '../../store/AppContext';
 import { Relation } from '../../store/types';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { ParentScreenProps } from '../../navigation/types';
+import { tlToKurus } from '../../utils/format';
 
 const AVATARS = ['🦊', '🐯', '🐼', '🦁', '🐨', '🐸', '🦄', '🐧', '🐶', '🐱'];
 const COLORS = ['#7C5CFC', '#2BB673', '#2E6BE6', '#F5A623', '#E5484D', '#00B8D9'];
@@ -15,7 +17,7 @@ const RELATIONS: { key: Relation; label: string }[] = [
   { key: 'diger', label: 'Diğer' },
 ];
 
-export function AddChildScreen({ navigation }: any) {
+export function AddChildScreen({ navigation }: ParentScreenProps<'AddChild'>) {
   const { addChild } = useApp();
   const [name, setName] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -34,7 +36,7 @@ export function AddChildScreen({ navigation }: any) {
     if (!valid) { setErr('Lütfen tüm alanları doğru doldur (PIN 4 hane, doğum tarihi YYYY-AA-GG).'); return; }
     addChild({
       name: name.trim(), birthDate, username: username.trim().toLowerCase(), avatar, color, pin,
-      relation, weeklyLimit: parseInt(weekly) || 350, createVirtual,
+      relation, weeklyLimit: tlToKurus(parseInt(weekly) || 350), createVirtual,
     });
     navigation.goBack();
   };

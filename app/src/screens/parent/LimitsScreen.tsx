@@ -4,6 +4,7 @@ import { Screen, H2, Muted, Card, Btn, Empty } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
 import { money } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
 function Stepper({ label, value, onChange, step }: { label: string; value: number; onChange: (v: number) => void; step: number }) {
   return (
@@ -18,13 +19,14 @@ function Stepper({ label, value, onChange, step }: { label: string; value: numbe
   );
 }
 
-export function LimitsScreen({ route, navigation }: any) {
+export function LimitsScreen({ route, navigation }: ParentScreenProps<'Limits'>) {
   const { childId } = route.params;
   const { childCard, updateCardLimits } = useApp();
   const card = childCard(childId);
-  const [daily, setDaily] = useState(card?.limits.daily || 100);
-  const [weekly, setWeekly] = useState(card?.limits.weekly || 350);
-  const [perTx, setPerTx] = useState(card?.limits.perTransaction || 75);
+  // Değerler kuruştur (Stepper money() ile gösterir, updateCardLimits kuruş kaydeder).
+  const [daily, setDaily] = useState(card?.limits.daily || 10000);
+  const [weekly, setWeekly] = useState(card?.limits.weekly || 35000);
+  const [perTx, setPerTx] = useState(card?.limits.perTransaction || 7500);
 
   if (!card) return <Screen><Empty icon="💳" title="Kart yok" /></Screen>;
 
@@ -32,9 +34,9 @@ export function LimitsScreen({ route, navigation }: any) {
     <Screen>
       <Muted>Limitler kart işlemlerinde anlık uygulanır. Limit aşan harcamalar otomatik reddedilir.</Muted>
       <Card>
-        <Stepper label="Tek işlem limiti" value={perTx} onChange={setPerTx} step={25} />
-        <Stepper label="Günlük limit" value={daily} onChange={setDaily} step={50} />
-        <Stepper label="Haftalık limit" value={weekly} onChange={setWeekly} step={50} />
+        <Stepper label="Tek işlem limiti" value={perTx} onChange={setPerTx} step={2500} />
+        <Stepper label="Günlük limit" value={daily} onChange={setDaily} step={5000} />
+        <Stepper label="Haftalık limit" value={weekly} onChange={setWeekly} step={5000} />
       </Card>
       <Btn title="Limitleri kaydet" onPress={() => { updateCardLimits(card.id, { daily, weekly, perTransaction: perTx }); navigation.goBack(); }} />
     </Screen>

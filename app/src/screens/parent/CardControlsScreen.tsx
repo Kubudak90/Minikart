@@ -4,8 +4,9 @@ import { Screen, H2, Muted, Card, Btn, ToggleRow, Divider, Empty } from '../../c
 import { CardVisual } from '../../components/CardVisual';
 import { useApp } from '../../store/AppContext';
 import { colors } from '../../theme/theme';
+import { ParentScreenProps } from '../../navigation/types';
 
-export function CardControlsScreen({ route, navigation }: any) {
+export function CardControlsScreen({ route, navigation }: ParentScreenProps<'CardControls'>) {
   const { childId } = route.params;
   const { state, childCard, setCardFrozen, updateCardControls, createVirtualCard, requestPhysicalCard } = useApp();
   const child = state.children.find((c) => c.id === childId)!;

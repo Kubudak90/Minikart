@@ -4,8 +4,9 @@ import { Screen, H2, Muted, Card, Btn, ProgressBar, Empty, Pill } from '../../co
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, font } from '../../theme/theme';
 import { money } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
-export function SavingsScreen({ route, navigation }: any) {
+export function SavingsScreen({ route, navigation }: ParentScreenProps<'Savings'>) {
   const { childId } = route.params;
   const { childGoals } = useApp();
   const goals = childGoals(childId);

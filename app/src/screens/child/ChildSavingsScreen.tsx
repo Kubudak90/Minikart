@@ -4,7 +4,7 @@ import { Screen, H2, Muted, Card, Btn, ProgressBar, Empty, Pill, Field } from '.
 import { useApp } from '../../store/AppContext';
 import { useCelebrate } from '../../components/Celebrate';
 import { colors, spacing, radius, font } from '../../theme/theme';
-import { money } from '../../utils/format';
+import { money, tlToKurus } from '../../utils/format';
 
 export function ChildSavingsScreen() {
   const { currentChild, childGoals, childWallet, contributeGoal } = useApp();
@@ -17,11 +17,12 @@ export function ChildSavingsScreen() {
   const [err, setErr] = useState('');
 
   const add = (goalId: string) => {
-    const a = parseFloat(amount) || 0;
+    const a = parseFloat(amount) || 0; // TL
     if (a <= 0) return;
+    const kurus = tlToKurus(a);
     const goal = goals.find((g) => g.id === goalId);
-    const willComplete = goal ? goal.currentAmount + a >= goal.targetAmount : false;
-    if (contributeGoal(goalId, a)) {
+    const willComplete = goal ? goal.currentAmount + kurus >= goal.targetAmount : false;
+    if (contributeGoal(goalId, kurus)) {
       setActive(null); setAmount(''); setErr('');
       if (willComplete) {
         celebrate({ title: 'Hedefini tamamladın! 🎉', sub: `${goal?.title} hedefine ulaştın. Harikasın!`, image: require('../../../assets/illustrations/celebration.png') });

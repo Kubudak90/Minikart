@@ -7,8 +7,10 @@ import { Icon } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font, fonts } from '../../theme/theme';
 import { money } from '../../utils/format';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { ChildScreenProps, ChildTabParamList } from '../../navigation/types';
 
-export function ChildHomeScreen({ navigation }: any) {
+export function ChildHomeScreen({ navigation }: ChildScreenProps<'ChildHome'>) {
   const { currentChild, childWallet, childCard, childTransactions, childGoals, childTasks, unreadCount, logout } = useApp();
   const child = currentChild();
   if (!child) return null;
@@ -66,7 +68,7 @@ export function ChildHomeScreen({ navigation }: any) {
       )}
 
       {/* Görev özeti */}
-      <Card onPress={() => navigation.getParent()?.navigate('TasksTab')} style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
+      <Card onPress={() => navigation.getParent<BottomTabNavigationProp<ChildTabParamList>>()?.navigate('TasksTab')} style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
         <Text style={{ fontSize: 28 }}>📋</Text>
         <View style={{ flex: 1 }}>
           <Text style={{ fontWeight: '700', color: colors.text }}>Görevlerim</Text>

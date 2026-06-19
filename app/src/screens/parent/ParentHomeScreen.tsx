@@ -7,8 +7,9 @@ import { Icon } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font, fonts, shadow, gradients } from '../../theme/theme';
 import { money, age } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
-export function ParentHomeScreen({ navigation }: any) {
+export function ParentHomeScreen({ navigation }: ParentScreenProps<'ParentHome'>) {
   const { state, currentParent, familyWallet, childWallet, childCard, unreadCount } = useApp();
   const parent = currentParent();
   const fam = familyWallet();

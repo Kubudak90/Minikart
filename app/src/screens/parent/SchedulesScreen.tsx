@@ -4,7 +4,8 @@ import { Screen, H2, Muted, Card, Btn, Field, Divider, Empty, Pill } from '../..
 import { useApp } from '../../store/AppContext';
 import { Frequency } from '../../store/types';
 import { colors, spacing, radius, font } from '../../theme/theme';
-import { money, shortDate } from '../../utils/format';
+import { money, shortDate, tlToKurus } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
 const FREQ: { key: Frequency; label: string }[] = [
   { key: 'weekly', label: 'Haftalık' },
@@ -12,7 +13,7 @@ const FREQ: { key: Frequency; label: string }[] = [
   { key: 'monthly', label: 'Aylık' },
 ];
 
-export function SchedulesScreen({ route }: any) {
+export function SchedulesScreen({ route }: ParentScreenProps<'Schedules'>) {
   const { childId } = route.params;
   const { state, createSchedule, toggleSchedule, deleteSchedule, runScheduleNow } = useApp();
   const schedules = state.allowanceSchedules.filter((a) => a.childId === childId);
@@ -25,7 +26,7 @@ export function SchedulesScreen({ route }: any) {
   const add = () => {
     const a = parseFloat(amount) || 0;
     if (a <= 0) return;
-    createSchedule(childId, a, freq, cap ? parseFloat(cap) : undefined);
+    createSchedule(childId, tlToKurus(a), freq, cap ? tlToKurus(parseFloat(cap)) : undefined);
     setMsg('Otomatik harçlık planı oluşturuldu.');
   };
 

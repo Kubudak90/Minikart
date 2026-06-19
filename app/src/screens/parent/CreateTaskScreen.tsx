@@ -3,10 +3,12 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field, ToggleRow } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { ParentScreenProps } from '../../navigation/types';
+import { tlToKurus } from '../../utils/format';
 
-const QUICK = [20, 30, 50, 100];
+const QUICK = [20, 30, 50, 100]; // TL ön ayarları
 
-export function CreateTaskScreen({ route, navigation }: any) {
+export function CreateTaskScreen({ route, navigation }: ParentScreenProps<'CreateTask'>) {
   const { childId } = route.params;
   const { createTask } = useApp();
   const [title, setTitle] = useState('');
@@ -35,7 +37,7 @@ export function CreateTaskScreen({ route, navigation }: any) {
         <ToggleRow icon="🔁" label="Tekrarlı görev" sub="Onaylandıkça yeniden açılır" value={repeating} onValueChange={setRepeating} />
         <ToggleRow icon="📷" label="Kanıt gerekli" sub="Çocuk tamamladığında ebeveyn onayı ister" value={proof} onValueChange={setProof} />
       </Card>
-      <Btn title="Görevi oluştur" disabled={!valid} onPress={() => { createTask(childId, title.trim(), desc.trim(), parseFloat(reward), proof, repeating ? 'repeating' : 'once'); navigation.goBack(); }} />
+      <Btn title="Görevi oluştur" disabled={!valid} onPress={() => { createTask(childId, title.trim(), desc.trim(), tlToKurus(parseFloat(reward)), proof, repeating ? 'repeating' : 'once'); navigation.goBack(); }} />
     </Screen>
   );
 }

@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H1, Muted, Btn, Card, Avatar } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
+import { isLocked, registerAttempt, initialGate, PinGate, MAX_PIN_ATTEMPTS, LOCK_MS } from '../../utils/security';
 
 // Spec §14 çocuk için PIN/avatar tabanlı giriş (demo PIN: 1234)
 export function ChildLoginScreen() {
@@ -10,19 +11,30 @@ export function ChildLoginScreen() {
   const [selected, setSelected] = useState<string | null>(null);
   const [pin, setPin] = useState('');
   const [err, setErr] = useState('');
+  const [gate, setGate] = useState<PinGate>(initialGate);
 
   const child = state.children.find((c) => c.id === selected);
+  const locked = isLocked(gate, Date.now());
 
   const press = (d: string) => {
-    if (pin.length >= 4) return;
+    if (pin.length >= 4 || locked) return;
     const next = pin + d;
     setPin(next);
     setErr('');
     if (next.length === 4) {
       setTimeout(() => {
-        if (selected && !loginChild(selected, next)) {
-          setErr('PIN hatalı. Demo PIN: 1234');
+        const ok = !!selected && loginChild(selected, next);
+        const now = Date.now();
+        const ng = registerAttempt(gate, ok, now);
+        setGate(ng);
+        if (!ok) {
           setPin('');
+          if (isLocked(ng, now)) {
+            setErr('Çok fazla yanlış deneme. 30 saniye bekle.');
+            setTimeout(() => { setGate(initialGate); setErr(''); }, LOCK_MS);
+          } else {
+            setErr(`PIN hatalı. ${MAX_PIN_ATTEMPTS - ng.attempts} hakkın kaldı. (demo: 1234)`);
+          }
         }
       }, 150);
     }
@@ -70,7 +82,7 @@ export function ChildLoginScreen() {
         {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map((k, i) => (
           <Pressable
             key={i}
-            disabled={k === ''}
+            disabled={k === '' || locked}
             onPress={() => (k === '⌫' ? setPin((p) => p.slice(0, -1)) : k && press(k))}
             style={({ pressed }) => [s.key, k === '' && { opacity: 0 }, pressed && { backgroundColor: colors.primarySoft }]}
           >

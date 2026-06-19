@@ -3,12 +3,13 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Field, Avatar } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font } from '../../theme/theme';
-import { money } from '../../utils/format';
+import { money, tlToKurus } from '../../utils/format';
+import { ParentScreenProps } from '../../navigation/types';
 
-const QUICK = [50, 100, 150, 200];
+const QUICK = [50, 100, 150, 200]; // TL ön ayarları
 const REASONS = ['Haftalık harçlık', 'Ödül', 'Acil para', 'Hediye'];
 
-export function SendAllowanceScreen({ route, navigation }: any) {
+export function SendAllowanceScreen({ route, navigation }: ParentScreenProps<'SendAllowance'>) {
   const { childId } = route.params;
   const { state, familyWallet, childWallet, childGoals, sendAllowance } = useApp();
   const child = state.children.find((c) => c.id === childId)!;
@@ -19,12 +20,13 @@ export function SendAllowanceScreen({ route, navigation }: any) {
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState(REASONS[0]);
   const [err, setErr] = useState('');
-  const val = parseFloat(amount.replace(',', '.')) || 0;
-  const insufficient = val > (fam?.balance || 0);
+  const val = parseFloat(amount.replace(',', '.')) || 0; // TL
+  const kurus = tlToKurus(val);
+  const insufficient = kurus > (fam?.balance || 0);
 
   const send = () => {
     if (val <= 0) return;
-    if (sendAllowance(childId, val, reason)) navigation.goBack();
+    if (sendAllowance(childId, kurus, reason)) navigation.goBack();
     else setErr('Aile bakiyesi yetersiz. Önce bakiye yükle.');
   };
 
@@ -61,7 +63,7 @@ export function SendAllowanceScreen({ route, navigation }: any) {
         <Card style={{ backgroundColor: colors.greenSoft }}>
           <Text style={{ fontWeight: '700', color: colors.green }}>🎯 Otomatik birikim</Text>
           {goals.map((g) => (
-            <Muted key={g.id}>{g.title}: bu harçlığın %{g.autoContributionPct}'i ({money(val * g.autoContributionPct / 100)}) otomatik hedefe gider.</Muted>
+            <Muted key={g.id}>{g.title}: bu harçlığın %{g.autoContributionPct}'i ({money(Math.round(kurus * g.autoContributionPct / 100))}) otomatik hedefe gider.</Muted>
           ))}
         </Card>
       )}
@@ -69,7 +71,7 @@ export function SendAllowanceScreen({ route, navigation }: any) {
       <Muted>Aile bakiyesi: {money(fam?.balance || 0)}</Muted>
       {err ? <Text style={{ color: colors.red, fontWeight: '600' }}>{err}</Text> : null}
       <Btn
-        title={val > 0 ? `${money(val)} Gönder` : 'Tutar gir'}
+        title={val > 0 ? `${money(kurus)} Gönder` : 'Tutar gir'}
         kind="success"
         disabled={val <= 0 || insufficient}
         onPress={send}
