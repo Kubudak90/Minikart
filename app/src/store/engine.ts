@@ -124,7 +124,8 @@ export function applyTaskApproval(s: AppState, taskId: string): TransferResult {
 
 // ---- görev gönderimi (kanıt fotoğrafı opsiyonel) ----
 export function applyTaskSubmit(s: AppState, taskId: string, photoUri?: string): AppState {
-  if (!s.tasks.some((x) => x.id === taskId)) return s;
+  const t = s.tasks.find((x) => x.id === taskId);
+  if (!t || t.status !== 'open') return s; // sadece açık görev gönderilebilir
   return {
     ...s,
     tasks: s.tasks.map((x) =>
@@ -135,7 +136,8 @@ export function applyTaskSubmit(s: AppState, taskId: string, photoUri?: string):
 
 // ---- görev reddi (görevi tekrar açar, not bırakır) ----
 export function applyTaskReject(s: AppState, taskId: string, note?: string): AppState {
-  if (!s.tasks.some((x) => x.id === taskId)) return s;
+  const t = s.tasks.find((x) => x.id === taskId);
+  if (!t || t.status !== 'submitted') return s; // sadece onay bekleyen görev reddedilebilir
   return {
     ...s,
     tasks: s.tasks.map((x) =>

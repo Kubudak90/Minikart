@@ -293,4 +293,37 @@ describe('görev kanıtı — saf engine geçişleri', () => {
     expect(r.state.tasks[0].status).toBe('open');
     expect(r.state.tasks[0].proofPhotoUri).toBeUndefined();
   });
+
+  test('applyTaskSubmit: open olmayan görevi değiştirmez (guard)', () => {
+    const s = withTask({ status: 'approved' });
+    const r = applyTaskSubmit(s, 'tsk_test', 'file:///x.jpg');
+    expect(r.tasks[0].status).toBe('approved');
+    expect(r.tasks[0].proofPhotoUri).toBeUndefined();
+  });
+
+  test('applyTaskSubmit: photoUri olmadan da submitted yapar, URI undefined kalır', () => {
+    const t = applyTaskSubmit(withTask(), 'tsk_test').tasks[0];
+    expect(t.status).toBe('submitted');
+    expect(t.proofPhotoUri).toBeUndefined();
+  });
+
+  test('applyTaskReject: submitted olmayan görevi değiştirmez (guard)', () => {
+    const s = withTask({ status: 'open' });
+    const r = applyTaskReject(s, 'tsk_test', 'not');
+    expect(r.tasks[0].status).toBe('open');
+    expect(r.tasks[0].rejectionNote).toBeUndefined();
+  });
+
+  test('applyTaskReject: ödülü aktarmaz (bakiye değişmez)', () => {
+    const s = withTask({ status: 'submitted', proofPhotoUri: 'file:///p.jpg' });
+    const before = childBal(s, ELIF);
+    const r = applyTaskReject(s, 'tsk_test', 'not');
+    expect(childBal(r, ELIF)).toBe(before);
+  });
+
+  test('applyTaskSubmit/applyTaskReject: olmayan görevde state aynen döner', () => {
+    const s = withTask();
+    expect(applyTaskSubmit(s, 'yok', 'x')).toBe(s);
+    expect(applyTaskReject(s, 'yok', 'n')).toBe(s);
+  });
 });
