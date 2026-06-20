@@ -9,10 +9,11 @@ import {
   MoneyRequest, Notification, Relation, Session, Task, Transaction, Wallet,
 } from './types';
 import { buildSeed } from './seed';
-import { applyTransfer, applyGoalContribution, applyTaskApproval, evaluateSpend, SpendResult } from './engine';
+import { applyTransfer, applyGoalContribution, applyTaskApproval, applyTaskSubmit, applyTaskReject, evaluateSpend, SpendResult } from './engine';
 import { deserializeState, serializeState, STORAGE_KEY, SESSION_KEY } from './persistence';
 import { uid, money } from '../utils/format';
 import { hashPin, verifyPin } from '../utils/security';
+import { deleteProofPhoto } from '../utils/proofPhotos';
 
 // ---- saf yardımcılar (immutable) ----
 const newTx = (t: Omit<Transaction, 'id' | 'createdAt'> & { createdAt?: string }): Transaction => ({
@@ -70,9 +71,9 @@ interface Ctx {
 
   // tasks
   createTask: (childId: string, title: string, description: string, reward: number, proofRequired: boolean, recurrence: 'once' | 'repeating') => void;
-  submitTask: (taskId: string) => void;
+  submitTask: (taskId: string, photoUri?: string) => void;
   approveTask: (taskId: string) => void;
-  rejectTask: (taskId: string) => void;
+  rejectTask: (taskId: string, note?: string) => void;
 
   // savings
   createGoal: (childId: string, title: string, target: number, icon: string, autoPct: number) => void;
@@ -326,26 +327,31 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       notifications: [newNotif({ scope: 'child', childId, type: 'task', title: 'Yeni görev! 📋', body: `${title} (+${money(reward)})` }), ...s.notifications],
       auditLogs: [newAudit('parent', 'task.created', 'child', childId), ...s.auditLogs],
     }));
-  const submitTask = (taskId: string) =>
+  const submitTask = (taskId: string, photoUri?: string) =>
     setState((s) => {
       const t = s.tasks.find((x) => x.id === taskId);
       if (!t) return s;
+      const next = applyTaskSubmit(s, taskId, photoUri);
       return {
-        ...s,
-        tasks: s.tasks.map((x) => (x.id === taskId ? { ...x, status: 'submitted' } : x)),
-        notifications: [newNotif({ scope: 'parent', type: 'task', title: 'Görev tamamlandı', body: `Görev "${t.title}" onayını bekliyor.` }), ...s.notifications],
+        ...next,
+        notifications: [newNotif({ scope: 'parent', type: 'task', title: 'Görev tamamlandı', body: `Görev "${t.title}" onayını bekliyor.` }), ...next.notifications],
       };
     });
   // Aile bakiyesi yetersizse görev 'submitted' kalır (kilitlenmez, ödül kaybolmaz).
   const approveTask = (taskId: string) =>
-    setState((s) => applyTaskApproval(s, taskId).state);
-  const rejectTask = (taskId: string) =>
+    setState((s) => {
+      deleteProofPhoto(s.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
+      return applyTaskApproval(s, taskId).state;
+    });
+  const rejectTask = (taskId: string, note?: string) =>
     setState((s) => {
       const t = s.tasks.find((x) => x.id === taskId);
+      if (!t) return s;
+      deleteProofPhoto(t.proofPhotoUri);
+      const next = applyTaskReject(s, taskId, note);
       return {
-        ...s,
-        tasks: s.tasks.map((x) => (x.id === taskId ? { ...x, status: 'open' } : x)),
-        notifications: t ? [newNotif({ scope: 'child', childId: t.childId, type: 'task', title: 'Görev tekrar denenebilir', body: `"${t.title}" görevini tekrar tamamlayabilirsin.` }), ...s.notifications] : s.notifications,
+        ...next,
+        notifications: [newNotif({ scope: 'child', childId: t.childId, type: 'task', title: 'Görev tekrar denenebilir', body: note ? `Ailen: "${note}" — tekrar deneyebilirsin.` : `"${t.title}" görevini tekrar tamamlayabilirsin.` }), ...next.notifications],
       };
     });
 
