@@ -338,8 +338,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       };
     });
   // Aile bakiyesi yetersizse görev 'submitted' kalır (kilitlenmez, ödül kaybolmaz).
+  // Fotoğrafı YALNIZCA onay başarılıysa sil; başarısız onayda kanıt korunur ki
+  // ebeveyn bakiye yüklendikten sonra tekrar onaylayabilsin.
   const approveTask = (taskId: string) => {
-    deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
+    if (applyTaskApproval(state, taskId).ok) {
+      deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
+    }
     setState((s) => applyTaskApproval(s, taskId).state);
   };
   const rejectTask = (taskId: string, note?: string) => {

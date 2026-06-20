@@ -40,4 +40,10 @@ describe('proofPhotos', () => {
   test('deleteProofPhoto(undefined) güvenli no-op (hata fırlatmaz)', () => {
     expect(() => deleteProofPhoto(undefined)).not.toThrow();
   });
+
+  test('beklenmedik hata fırlarsa {error:"cancelled"} döner (çökme yok)', async () => {
+    picker.requestCameraPermissionsAsync.mockRejectedValue(new Error('native crash'));
+    const r = await captureProofPhoto('tsk_1');
+    expect(r).toEqual({ error: 'cancelled' });
+  });
 });

@@ -7,12 +7,17 @@ export type CaptureResult = { uri: string } | { error: 'denied' | 'cancelled' };
 
 // Kamera izni iste → kamerayı aç → çekilen fotoğrafı kalıcı klasöre kopyala → URI döndür.
 export async function captureProofPhoto(taskId: string): Promise<CaptureResult> {
-  const perm = await ImagePicker.requestCameraPermissionsAsync();
-  if (!perm.granted) return { error: 'denied' };
-  const res = await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.5 });
-  if (res.canceled || !res.assets?.length) return { error: 'cancelled' };
-  const uri = await saveProofPhoto(taskId, res.assets[0].uri);
-  return { uri };
+  try {
+    const perm = await ImagePicker.requestCameraPermissionsAsync();
+    if (!perm.granted) return { error: 'denied' };
+    const res = await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.5 });
+    if (res.canceled || !res.assets?.length) return { error: 'cancelled' };
+    const uri = await saveProofPhoto(taskId, res.assets[0].uri);
+    return { uri };
+  } catch {
+    // beklenmedik kamera/dosya hatası → sessizce iptal gibi davran (çökme yok)
+    return { error: 'cancelled' };
+  }
 }
 
 // Çekilen geçici dosyayı document/task-proofs/<taskId>.jpg'e kopyala.
