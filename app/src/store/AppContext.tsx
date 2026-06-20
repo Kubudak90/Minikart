@@ -72,7 +72,7 @@ interface Ctx {
   // tasks
   createTask: (childId: string, title: string, description: string, reward: number, proofRequired: boolean, recurrence: 'once' | 'repeating') => void;
   submitTask: (taskId: string, photoUri?: string) => void;
-  approveTask: (taskId: string) => void;
+  approveTask: (taskId: string) => boolean; // ödül ödendiyse true, aile bakiyesi yetmezse false
   rejectTask: (taskId: string, note?: string) => void;
 
   // savings
@@ -340,11 +340,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Aile bakiyesi yetersizse görev 'submitted' kalır (kilitlenmez, ödül kaybolmaz).
   // Fotoğrafı YALNIZCA onay başarılıysa sil; başarısız onayda kanıt korunur ki
   // ebeveyn bakiye yüklendikten sonra tekrar onaylayabilsin.
-  const approveTask = (taskId: string) => {
-    if (applyTaskApproval(state, taskId).ok) {
-      deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
-    }
+  const approveTask = (taskId: string): boolean => {
+    const ok = applyTaskApproval(state, taskId).ok;
+    if (ok) deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
     setState((s) => applyTaskApproval(s, taskId).state);
+    return ok;
   };
   const rejectTask = (taskId: string, note?: string) => {
     deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
