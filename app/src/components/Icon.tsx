@@ -9,7 +9,7 @@ import {
   ArrowUp, ArrowDown, ShoppingBag, BookOpen, Coins, CircleHelp, Eye, EyeOff,
   Bus, Shirt, Gamepad2, Package, FerrisWheel, Landmark, ShoppingCart, Pencil,
   UtensilsCrossed, Sparkles, Plus as PlusIcon, Hand, CircleCheck, CircleAlert,
-  TrendingUp, Clock,
+  TrendingUp, Clock, Camera,
 } from 'lucide-react-native';
 import { colors } from '../theme/theme';
 
@@ -25,7 +25,7 @@ const MAP: Record<string, any> = {
   coins: Coins, help: CircleHelp, eye: Eye, 'eye-off': EyeOff, bus: Bus, shirt: Shirt,
   game: Gamepad2, package: Package, ferris: FerrisWheel, atm: Landmark, cart: ShoppingCart,
   pencil: Pencil, food: UtensilsCrossed, sparkles: Sparkles, hand: Hand,
-  'check-circle': CircleCheck, 'alert-circle': CircleAlert, trending: TrendingUp, clock: Clock,
+  'check-circle': CircleCheck, 'alert-circle': CircleAlert, trending: TrendingUp, clock: Clock, camera: Camera,
 };
 
 export type IconName = keyof typeof MAP | string;
