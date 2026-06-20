@@ -338,22 +338,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       };
     });
   // Aile bakiyesi yetersizse görev 'submitted' kalır (kilitlenmez, ödül kaybolmaz).
-  const approveTask = (taskId: string) =>
-    setState((s) => {
-      deleteProofPhoto(s.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
-      return applyTaskApproval(s, taskId).state;
-    });
-  const rejectTask = (taskId: string, note?: string) =>
+  const approveTask = (taskId: string) => {
+    deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
+    setState((s) => applyTaskApproval(s, taskId).state);
+  };
+  const rejectTask = (taskId: string, note?: string) => {
+    deleteProofPhoto(state.tasks.find((x) => x.id === taskId)?.proofPhotoUri);
     setState((s) => {
       const t = s.tasks.find((x) => x.id === taskId);
       if (!t) return s;
-      deleteProofPhoto(t.proofPhotoUri);
       const next = applyTaskReject(s, taskId, note);
       return {
         ...next,
         notifications: [newNotif({ scope: 'child', childId: t.childId, type: 'task', title: 'Görev tekrar denenebilir', body: note ? `Ailen: "${note}" — tekrar deneyebilirsin.` : `"${t.title}" görevini tekrar tamamlayabilirsin.` }), ...next.notifications],
       };
     });
+  };
 
   // ---- savings ----
   const createGoal: Ctx['createGoal'] = (childId, title, target, icon, autoPct) =>
