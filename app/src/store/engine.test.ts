@@ -1,8 +1,8 @@
 // Limit motoru + para transferi çekirdeği için testler.
 // Para tamsayı KURUŞ olarak tutulur; testlerde okunabilirlik için TL() ile yazılır.
 import { buildSeed } from './seed';
-import { evaluateSpend, applyTransfer, applyGoalContribution, applyTaskApproval } from './engine';
-import { AppState, Transaction } from './types';
+import { evaluateSpend, applyTransfer, applyGoalContribution, applyTaskApproval, applyTaskSubmit, applyTaskReject } from './engine';
+import { AppState, Transaction, Task } from './types';
 
 const ELIF = 'chd_elif';
 const KEREM = 'chd_kerem';
@@ -243,5 +243,54 @@ describe('applyGoalContribution — birikim hedefi', () => {
     const g = state.savingsGoals.find((x) => x.id === gid)!;
     expect(g.currentAmount).toBe(TL(186));
     expect(g.status).toBe('completed');
+  });
+});
+
+function withTask(overrides: Partial<Task> = {}): AppState {
+  const s = buildSeed();
+  const task: Task = {
+    id: 'tsk_test', childId: ELIF, createdByParentId: 'par_x', title: 'Odanı topla',
+    description: '', rewardAmount: TL(10), recurrence: 'once', proofRequired: true,
+    status: 'open', createdAt: '2026-06-19T10:00:00.000Z', ...overrides,
+  };
+  // ödül testleri için aile cüzdanını bolca fonla
+  const wallets = s.wallets.map((w) => (w.ownerType === 'family' ? { ...w, balance: TL(1000) } : w));
+  // otomatik birikimi devre dışı bırak (yalnızca görev lojik testine odaklan)
+  const savingsGoals = s.savingsGoals.map((g) => ({ ...g, autoContributionPct: 0 }));
+  return { ...s, wallets, tasks: [task], savingsGoals };
+}
+
+describe('görev kanıtı — saf engine geçişleri', () => {
+  test('applyTaskSubmit: submitted yapar, foto URI set eder, eski notu temizler', () => {
+    const s = withTask({ rejectionNote: 'eski not' });
+    const t = applyTaskSubmit(s, 'tsk_test', 'file:///proof.jpg').tasks[0];
+    expect(t.status).toBe('submitted');
+    expect(t.proofPhotoUri).toBe('file:///proof.jpg');
+    expect(t.rejectionNote).toBeUndefined();
+  });
+
+  test('applyTaskReject: open yapar, notu yazar, fotoyu temizler', () => {
+    const s = withTask({ status: 'submitted', proofPhotoUri: 'file:///proof.jpg' });
+    const t = applyTaskReject(s, 'tsk_test', 'yatağı da topla').tasks[0];
+    expect(t.status).toBe('open');
+    expect(t.rejectionNote).toBe('yatağı da topla');
+    expect(t.proofPhotoUri).toBeUndefined();
+  });
+
+  test('applyTaskApproval: ödül öder, approved yapar, fotoyu temizler', () => {
+    const s = withTask({ status: 'submitted', proofPhotoUri: 'file:///proof.jpg' });
+    const before = childBal(s, ELIF);
+    const r = applyTaskApproval(s, 'tsk_test');
+    expect(r.ok).toBe(true);
+    expect(r.state.tasks[0].status).toBe('approved');
+    expect(r.state.tasks[0].proofPhotoUri).toBeUndefined();
+    expect(childBal(r.state, ELIF)).toBe(before + TL(10));
+  });
+
+  test('applyTaskApproval: tekrarlı görev tekrar open olur, foto temizlenir', () => {
+    const s = withTask({ status: 'submitted', recurrence: 'repeating', proofPhotoUri: 'file:///p.jpg' });
+    const r = applyTaskApproval(s, 'tsk_test');
+    expect(r.state.tasks[0].status).toBe('open');
+    expect(r.state.tasks[0].proofPhotoUri).toBeUndefined();
   });
 });
