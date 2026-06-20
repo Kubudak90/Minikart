@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Modal, Pressable } from 'react-native';
+import { View, Text, Image, Modal, Pressable, Alert } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, Pill, Empty, Field } from '../../components/ui';
 import { useApp } from '../../store/AppContext';
 import { Task } from '../../store/types';
@@ -64,7 +64,7 @@ export function TasksScreen({ route, navigation }: ParentScreenProps<'Tasks'>) {
                   </View>
                 ) : (
                   <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-                    <Btn title={`Onayla (${money(t.rewardAmount)})`} icon="check" small kind="success" style={{ flex: 1 }} onPress={() => approveTask(t.id)} />
+                    <Btn title={`Onayla (${money(t.rewardAmount)})`} icon="check" small kind="success" style={{ flex: 1 }} onPress={() => { if (!approveTask(t.id)) Alert.alert('Yetersiz bakiye', 'Aile cüzdanında bu ödülü karşılayacak bakiye yok. Önce bakiye yükleyin, sonra tekrar onaylayın.'); }} />
                     <Btn title="Reddet" small kind="ghost" onPress={() => setRejectingId(t.id)} />
                   </View>
                 )}

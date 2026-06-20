@@ -20,11 +20,13 @@ export async function captureProofPhoto(taskId: string): Promise<CaptureResult> 
   }
 }
 
-// Çekilen geçici dosyayı document/task-proofs/<taskId>.jpg'e kopyala.
+// Çekilen geçici dosyayı document/task-proofs/<taskId>-<zaman>.jpg'e kopyala.
+// Benzersiz ad (zaman damgalı): reddet→tekrar gönder akışında RN Image'in URI
+// cache'i eski fotoğrafı göstermesin diye her çekim yeni bir dosya adı alır.
 async function saveProofPhoto(taskId: string, sourceUri: string): Promise<string> {
   const dir = new Directory(Paths.document, 'task-proofs');
   if (!dir.exists) dir.create();
-  const dest = new File(dir, `${taskId}.jpg`);
+  const dest = new File(dir, `${taskId}-${Date.now()}.jpg`);
   if (dest.exists) dest.delete();
   await new File(sourceUri).copy(dest);
   return dest.uri;
