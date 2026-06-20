@@ -34,8 +34,8 @@ export function CreateTaskScreen({ route, navigation }: ParentScreenProps<'Creat
         </View>
       </Card>
       <Card>
-        <ToggleRow icon="🔁" label="Tekrarlı görev" sub="Onaylandıkça yeniden açılır" value={repeating} onValueChange={setRepeating} />
-        <ToggleRow icon="📷" label="Kanıt gerekli" sub="Çocuk tamamladığında ebeveyn onayı ister" value={proof} onValueChange={setProof} />
+        <ToggleRow icon="repeat" label="Tekrarlı görev" sub="Onaylandıkça yeniden açılır" value={repeating} onValueChange={setRepeating} />
+        <ToggleRow icon="camera" label="Fotoğraf kanıtı iste" sub="Çocuk görevi bitince kamerayla bir fotoğraf çeksin" value={proof} onValueChange={setProof} />
       </Card>
       <Btn title="Görevi oluştur" disabled={!valid} onPress={() => { createTask(childId, title.trim(), desc.trim(), tlToKurus(parseFloat(reward)), proof, repeating ? 'repeating' : 'once'); navigation.goBack(); }} />
     </Screen>
