@@ -30,6 +30,13 @@ describe('proofPhotos', () => {
     expect(r).toEqual({ error: 'cancelled' });
   });
 
+  test('kamera açılır ama asset dönmezse {error:"cancelled"} döner', async () => {
+    picker.requestCameraPermissionsAsync.mockResolvedValue({ granted: true } as any);
+    picker.launchCameraAsync.mockResolvedValue({ canceled: false, assets: [] } as any);
+    const r = await captureProofPhoto('tsk_1');
+    expect(r).toEqual({ error: 'cancelled' });
+  });
+
   test('deleteProofPhoto(undefined) güvenli no-op (hata fırlatmaz)', () => {
     expect(() => deleteProofPhoto(undefined)).not.toThrow();
   });

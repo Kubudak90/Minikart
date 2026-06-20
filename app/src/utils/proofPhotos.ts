@@ -3,8 +3,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import { File, Directory, Paths } from 'expo-file-system';
 
-const PROOF_DIR = new Directory(Paths.document, 'task-proofs');
-
 export type CaptureResult = { uri: string } | { error: 'denied' | 'cancelled' };
 
 // Kamera izni iste → kamerayı aç → çekilen fotoğrafı kalıcı klasöre kopyala → URI döndür.
@@ -19,8 +17,9 @@ export async function captureProofPhoto(taskId: string): Promise<CaptureResult> 
 
 // Çekilen geçici dosyayı document/task-proofs/<taskId>.jpg'e kopyala.
 async function saveProofPhoto(taskId: string, sourceUri: string): Promise<string> {
-  if (!PROOF_DIR.exists) PROOF_DIR.create();
-  const dest = new File(PROOF_DIR, `${taskId}.jpg`);
+  const dir = new Directory(Paths.document, 'task-proofs');
+  if (!dir.exists) dir.create();
+  const dest = new File(dir, `${taskId}.jpg`);
   if (dest.exists) dest.delete();
   await new File(sourceUri).copy(dest);
   return dest.uri;
