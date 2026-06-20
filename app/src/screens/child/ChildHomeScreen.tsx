@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Screen, H2, Muted, Card, Btn, ProgressBar, Divider, Avatar, Pill } from '../../components/ui';
 import { CardVisual } from '../../components/CardVisual';
 import { TxRow } from '../../components/TxRow';
-import { Icon } from '../../components/Icon';
+import { Icon, IconCircle } from '../../components/Icon';
 import { useApp } from '../../store/AppContext';
 import { colors, spacing, radius, font, fonts } from '../../theme/theme';
 import { money } from '../../utils/format';
@@ -27,7 +27,7 @@ export function ChildHomeScreen({ navigation }: ChildScreenProps<'ChildHome'>) {
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginTop: spacing.sm }}>
         <Avatar emoji={child.avatar} size={48} color={child.color + '33'} />
         <View style={{ flex: 1 }}>
-          <Muted>Merhaba 👋</Muted>
+          <Muted>Merhaba</Muted>
           <Text style={{ fontSize: font.h2, fontFamily: fonts.headingX, color: colors.text }}>{child.name}</Text>
         </View>
         <Pressable onPress={() => navigation.navigate('ChildNotifications')} style={s.bell}>
@@ -69,7 +69,7 @@ export function ChildHomeScreen({ navigation }: ChildScreenProps<'ChildHome'>) {
 
       {/* Görev özeti */}
       <Card onPress={() => navigation.getParent<BottomTabNavigationProp<ChildTabParamList>>()?.navigate('TasksTab')} style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
-        <Text style={{ fontSize: 28 }}>📋</Text>
+        <IconCircle name="tasks" />
         <View style={{ flex: 1 }}>
           <Text style={{ fontWeight: '700', color: colors.text }}>Görevlerim</Text>
           <Muted>{openTasks > 0 ? `${openTasks} görev seni bekliyor` : 'Şu an açık görev yok'}</Muted>
