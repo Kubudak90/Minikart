@@ -145,6 +145,8 @@ export interface Task {
   dueDate?: string;
   recurrence: 'once' | 'repeating';
   proofRequired: boolean;
+  proofPhotoUri?: string; // kanıt fotoğrafının yerel dosya yolu (yalnızca onay beklerken dolu)
+  rejectionNote?: string; // ebeveynin en son geri gönderme notu
   status: TaskStatus;
   createdAt: string;
 }

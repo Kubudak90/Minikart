@@ -115,9 +115,35 @@ export function applyTaskApproval(s: AppState, taskId: string): TransferResult {
   const res = applyTransfer(s, t.childId, t.rewardAmount, 'reward', `Görev ödülü: ${t.title}`);
   if (!res.ok) return { state: s, ok: false };
   const tasks = res.state.tasks.map((x) =>
-    x.id === taskId ? { ...x, status: (x.recurrence === 'repeating' ? 'open' : 'approved') as Task['status'] } : x,
+    x.id === taskId
+      ? { ...x, status: (x.recurrence === 'repeating' ? 'open' : 'approved') as Task['status'], proofPhotoUri: undefined }
+      : x,
   );
   return { state: { ...res.state, tasks }, ok: true };
+}
+
+// ---- görev gönderimi (kanıt fotoğrafı opsiyonel) ----
+export function applyTaskSubmit(s: AppState, taskId: string, photoUri?: string): AppState {
+  const t = s.tasks.find((x) => x.id === taskId);
+  if (!t || t.status !== 'open') return s; // sadece açık görev gönderilebilir
+  return {
+    ...s,
+    tasks: s.tasks.map((x) =>
+      x.id === taskId ? { ...x, status: 'submitted', proofPhotoUri: photoUri, rejectionNote: undefined } : x,
+    ),
+  };
+}
+
+// ---- görev reddi (görevi tekrar açar, not bırakır) ----
+export function applyTaskReject(s: AppState, taskId: string, note?: string): AppState {
+  const t = s.tasks.find((x) => x.id === taskId);
+  if (!t || t.status !== 'submitted') return s; // sadece onay bekleyen görev reddedilebilir
+  return {
+    ...s,
+    tasks: s.tasks.map((x) =>
+      x.id === taskId ? { ...x, status: 'open', rejectionNote: note, proofPhotoUri: undefined } : x,
+    ),
+  };
 }
 
 // ---- birikim hedefine elle aktarım ----
