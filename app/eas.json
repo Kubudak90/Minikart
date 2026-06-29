@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": { "simulator": false }
+    },
+    "production": {
+      "autoIncrement": true,
+      "android": { "buildType": "app-bundle" }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascApiKeyPath": "/Users/huseyinarslan/eas-secrets/AuthKey_B5KA5HPZ8L.p8",
+        "ascApiKeyId": "B5KA5HPZ8L",
+        "ascApiKeyIssuerId": "fe1d0eff-62b6-41a9-8938-dce2f708344c"
+      },
+      "android": {
+        "serviceAccountKeyPath": "/Users/huseyinarslan/eas-secrets/play-service-account.json",
+        "track": "internal"
+      }
+    }
+  }
+}

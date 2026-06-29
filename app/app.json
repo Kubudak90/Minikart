@@ -15,6 +15,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.minikart.aile",
       "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "MiniKart, görev kanıtı fotoğrafı çekebilmen için kameranı kullanır."
       }
     },
@@ -37,7 +38,8 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "MiniKart, görev kanıtı fotoğrafı çekebilmen için kameranı kullanır."
+          "cameraPermission": "MiniKart, görev kanıtı fotoğrafı çekebilmen için kameranı kullanır.",
+          "photosPermission": false
         }
       ]
     ]
