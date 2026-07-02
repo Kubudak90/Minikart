@@ -39,3 +39,11 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# EAS local iOS credentials (never commit)
+credentials.json
+eas-dist.p12
+eas-appstore.mobileprovision
+
+# native build output
+build/

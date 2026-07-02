@@ -10,11 +10,18 @@
     },
     "preview": {
       "distribution": "internal",
-      "ios": { "simulator": false }
+      "ios": {
+        "simulator": false
+      }
     },
     "production": {
       "autoIncrement": true,
-      "android": { "buildType": "app-bundle" }
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      }
     }
   },
   "submit": {
@@ -22,7 +29,8 @@
       "ios": {
         "ascApiKeyPath": "/Users/huseyinarslan/eas-secrets/AuthKey_B5KA5HPZ8L.p8",
         "ascApiKeyId": "B5KA5HPZ8L",
-        "ascApiKeyIssuerId": "fe1d0eff-62b6-41a9-8938-dce2f708344c"
+        "ascApiKeyIssuerId": "fe1d0eff-62b6-41a9-8938-dce2f708344c",
+        "ascAppId": "6785868016"
       },
       "android": {
         "serviceAccountKeyPath": "/Users/huseyinarslan/eas-secrets/play-service-account.json",
